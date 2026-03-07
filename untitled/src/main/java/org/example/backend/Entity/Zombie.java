@@ -14,6 +14,47 @@ public class Zombie extends Entity implements Enemy{
     }
 
     @Override
+    public int[] enemyWalking(GameMap map, Player player){
+        int entityRoomId = map.getEntityRoomID(this);
+        int playerRoomId = map.getEntityRoomID(player);
+        int[] movement = {0, 0};
+        if (entityRoomId == playerRoomId){
+            movement = entityFollowsPlayer(map, player);
+        } else{
+            movement = entityRandomWalk(map);
+        }
+        return movement;
+    }
+
+    @Override
+    public int[] entityFollowsPlayer(GameMap map, Player player){
+        int playerX = player.getCordXY()[0], playerY = player.getCordXY()[1];
+        int enemyX = this.cordXY[0], enemyY = this.cordXY[1];
+        int dx = 0, dy = 0;
+        if (enemyY > playerY){
+            //если мы выше игрока
+            dx = 0;
+            dy = -1;
+        } else if(enemyY < playerY){
+            //если мы ниже игрока
+            dx = 0;
+            dy = 1;
+        } else if (enemyX > playerX) {
+            //если мы левее игрока
+            dx = -1;
+            dy = 0;
+        }  else if(enemyX < playerX) {
+            //если мы правее игрока
+            dx = 1;
+            dy = 0;
+        }
+        if (MovementChecker.isMovementAllowed(this, map, new int[]{dx, dy})) {
+            this.move(dx,dy);
+        }
+        return new int[]{dx, dy};
+    }
+
+    @Override
     public int[] entityRandomWalk(GameMap map){
         Random rand = new Random();
         boolean isMovementCompleted;

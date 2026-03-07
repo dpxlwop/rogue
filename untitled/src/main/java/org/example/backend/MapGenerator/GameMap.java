@@ -1,5 +1,6 @@
 package org.example.backend.MapGenerator;
 
+import org.example.backend.Entity.Enemy;
 import org.example.backend.Entity.Entity;
 import org.example.backend.Entity.Player;
 import org.example.backend.Tile;
@@ -25,7 +26,9 @@ public class GameMap extends MapGenerator{
         player.setPosition(center);
     }
 
-    public int getPlayerRoomID(int x, int y){
+    public int getEntityRoomID(Entity entity){
+        int[] cords = entity.getCordXY();
+        int x = cords[0], y = cords[1];
         int roomId = -1;
         for (int i = 0; i < rooms.size(); i++){
             int[] pos = rooms.get(i).getPosition();

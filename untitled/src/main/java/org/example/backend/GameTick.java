@@ -22,12 +22,12 @@ public class GameTick {
         }
         for (Entity e : enemies) {
             if (e instanceof Enemy a) {
-                a.entityRandomWalk(map);
+                a.enemyWalking(map, player);
             }
         }
         //получение roomid для тумана войны
         int[] cords = player.getCordXY();
-        System.out.println(map.getPlayerRoomID(cords[0], cords[1]));
+        System.out.println(map.getEntityRoomID(player));
 
 
         drawer.draw(map.getMap(), player, enemies);
