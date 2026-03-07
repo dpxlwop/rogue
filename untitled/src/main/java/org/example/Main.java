@@ -22,15 +22,32 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         Drawer drawer = new Drawer(WIDTH, MAP_HEIGHT, SCREEN_HEIGHT);
-        KeyHandler keyHandler = new KeyHandler(drawer.getScreen());
-        GameMap map = new GameMap(WIDTH, MAP_HEIGHT);
-        Player player = new Player(new int[]{1, 1}, 100, 10, 10);
-        map.spawnPlayer(player);
-        ArrayList<Entity> Enemies = map.getEnemiesInRooms();
-        drawer.drawWelcomeScreen();
         while (true) {
-            GameTickExitCodes exitCode = gameTick(drawer, keyHandler, map, player, Enemies);
+            KeyHandler keyHandler = new KeyHandler(drawer.getScreen());
+            GameMap map = new GameMap(WIDTH, MAP_HEIGHT);
+            Player player = new Player(new int[]{1, 1}, 1, 1, 1);
+            map.spawnPlayer(player);
+            ArrayList<Entity> Enemies = map.getEnemiesInRooms();
+            drawer.drawWelcomeScreen();
+            boolean isPlayerDead = false;
+            while (!isPlayerDead) {
+                GameTickExitCodes exitCode = gameTick(drawer, keyHandler, map, player, Enemies);
+                if (exitCode == GameTickExitCodes.GAME_OVER_BY_PLAYER) {
+                    drawer.drawQuitScreen();
+                    Thread.sleep(5000);
+                    drawer.stop();
+                    return;
+                } else if (exitCode == GameTickExitCodes.GAME_OVER_PLAYER_DIED) {
+                    drawer.drawDeadScreen();
+                    isPlayerDead = true;
+                    Thread.sleep(5000);
+                } else if (exitCode == GameTickExitCodes.GAME_OVER_WIN) {
+                    drawer.drawWinScreen();
+                    Thread.sleep(5000);
+                    drawer.stop();
+                    return;
+                }
+            }
         }
-        //screen.stopScreen();
     }
 }

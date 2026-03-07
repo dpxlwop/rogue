@@ -1,4 +1,5 @@
 package org.example.backend.Entity;
+import com.googlecode.lanterna.TextColor;
 import org.example.backend.Entity.Entities;
 
 public class Player extends Entity{
@@ -27,5 +28,7 @@ public class Player extends Entity{
         cordXY[1] += dy;
 
     }
-
+    public TextColor getColor(){
+        return TextColor.ANSI.CYAN;
+    }
 }

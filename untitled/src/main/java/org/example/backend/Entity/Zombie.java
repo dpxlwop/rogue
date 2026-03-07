@@ -1,6 +1,7 @@
 package org.example.backend.Entity;
 import java.util.Random;
 
+import com.googlecode.lanterna.TextColor;
 import org.example.backend.Interaction.MovementChecker;
 import org.example.backend.MapGenerator.GameMap;
 import org.example.backend.Interaction.MovementCodes;
@@ -10,6 +11,10 @@ public class Zombie extends Entity implements Enemy{
     public Zombie(int[] cordXY){
         super(cordXY, 10, 2, 6);
         this.evilness = 6;
+    }
+
+    public int getEvilness(){
+        return this.evilness;
     }
 
     @Override
@@ -78,5 +83,9 @@ public class Zombie extends Entity implements Enemy{
             }
         }
         return new int[]{0, 0};
+    }
+    @Override
+    public TextColor getColor(){
+        return TextColor.ANSI.GREEN;
     }
 }

@@ -1,5 +1,7 @@
 package org.example.backend.Entity;
-import org.example.backend.Entity.Entities;
+
+import com.googlecode.lanterna.TextColor;
+
 public abstract class Entity {
     protected int[] cordXY;
     protected int[] oldCordXY;
@@ -56,4 +58,6 @@ public abstract class Entity {
     public boolean isDead(){
         return health <= 0;
     }
+
+    public abstract TextColor getColor();
 }

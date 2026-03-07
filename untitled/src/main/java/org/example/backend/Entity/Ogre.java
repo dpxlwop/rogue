@@ -1,6 +1,7 @@
 package org.example.backend.Entity;
 import java.util.Random;
 
+import com.googlecode.lanterna.TextColor;
 import org.example.backend.Interaction.MovementChecker;
 import org.example.backend.MapGenerator.GameMap;
 import org.example.backend.Interaction.MovementCodes;
@@ -11,6 +12,10 @@ public class Ogre extends Entity implements Enemy{
     public Ogre(int[] cordXY){
         super(cordXY, 14, 2, 14);
         this.evilness = 6;
+    }
+
+    public int getEvilness(){
+        return this.evilness;
     }
 
     @Override
@@ -79,5 +84,9 @@ public class Ogre extends Entity implements Enemy{
             }
         }
         return new int[]{0, 0};
+    }
+    @Override
+    public TextColor getColor(){
+        return TextColor.ANSI.YELLOW;
     }
 }

@@ -1,14 +1,14 @@
 package org.example.backend.Interaction;
 
-import org.example.backend.Entity.Enemy;
 import org.example.backend.Entity.Entity;
 import org.example.backend.Entity.Player;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Fight {
-    public static Entity fight(Player player, ArrayList<Entity> enemies, int[] kickPos){
+public class FightPlayerAgressor {
+    static Random rand = new Random();
+    public static Entity playerAttacs(Player player, ArrayList<Entity> enemies, int[] kickPos){
         Entity enemy = null;
         for (Entity e : enemies){
             int[] playerPos = player.getCordXY();
@@ -16,13 +16,13 @@ public class Fight {
             int kickY = playerPos[1] + kickPos[1];
             if(e != null && e.getCordXY()[0] == kickX && e.getCordXY()[1] == kickY) {
                 enemy = e;
-                System.out.print(String.format("enemy: %s, hp: %d", enemy.getClass().getSimpleName(), enemy.getHealth()));
+                System.out.println(String.format("enemy: %s, hp: %d", enemy.getClass().getSimpleName(), enemy.getHealth()));
                 break;
             }
         }
-        if(enemy != null && isSuccessKick(enemy, player)){
+        if(enemy != null && isSuccessKick(player)){
             int damage = getDamage(enemy, player);
-            confirmDamage(enemy, damage);s
+            confirmDamage(enemy, damage);
             return enemy;
         }
         return null;
@@ -35,9 +35,8 @@ public class Fight {
         return damage <= 0 ? 1 : damage;
     }
 
-    private static boolean isSuccessKick(Entity enemy, Entity attacker){
+    private static boolean isSuccessKick(Entity attacker){
         double attackerAgility = attacker.getAgility() / 10.0;
-        Random rand = new Random();
         if (rand.nextDouble() < 0.5 + attackerAgility){
             return true;
         }

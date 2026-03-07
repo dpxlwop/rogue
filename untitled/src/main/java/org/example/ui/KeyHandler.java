@@ -45,6 +45,10 @@ public class KeyHandler {
                     move[0] = 1;
                     move[1] = 0;
                     break;
+                case 'q':
+                    move[0] = -999;
+                    move[1] = -999;
+                    break;
             }
         }
         return move;
