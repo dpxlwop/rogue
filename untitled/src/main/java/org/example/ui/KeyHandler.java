@@ -16,9 +16,11 @@ public class KeyHandler {
     public int[] handleInput(Player player) throws Exception {
         KeyStroke key = screen.pollInput();
         int[] move = new int[]{0,0};
-        if (key != null) {
-            move = processInput(player, key);
-            System.out.println("Key pressed: " + key.getCharacter());
+        while (key == null){
+            key = screen.pollInput();
+            if (key != null) {
+                move = processInput(player, key);
+            }
         }
         return move;
     }

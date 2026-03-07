@@ -17,8 +17,8 @@ import static org.example.backend.GameTick.gameTick;
 
 public class Main {
     public static final int WIDTH = 120;
-    public static final int MAP_HEIGHT = 40;
-    public static final int SCREEN_HEIGHT = 60;
+    public static final int MAP_HEIGHT = 38;
+    public static final int SCREEN_HEIGHT = 40;
 
     public static void main(String[] args) throws Exception {
         Drawer drawer = new Drawer(WIDTH, MAP_HEIGHT, SCREEN_HEIGHT);
@@ -27,6 +27,7 @@ public class Main {
         Player player = new Player(new int[]{1, 1}, 100, 10, 10);
         map.spawnPlayer(player);
         ArrayList<Entity> Enemies = map.getEnemiesInRooms();
+        drawer.drawWelcomeScreen();
         while (true) {
             GameTickExitCodes exitCode = gameTick(drawer, keyHandler, map, player, Enemies);
         }

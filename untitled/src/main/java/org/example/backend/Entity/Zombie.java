@@ -18,9 +18,9 @@ public class Zombie extends Entity implements Enemy{
         Random rand = new Random();
         boolean isMovementCompleted;
         int dx, dy;
-        if (rand.nextDouble() < (this.getAgility() / 10.0)){        //получение вероятности хода
+        if (rand.nextDouble() < (this.getAgility() / 10.0 - 0.2)){        //получение вероятности хода
             isMovementCompleted = false;
-            while (isMovementCompleted) {
+            while (!isMovementCompleted) {
                 dx = 0;
                 dy = 0;
                 if (rand.nextDouble() < 0.5) {       //перемещение по x
@@ -32,6 +32,8 @@ public class Zombie extends Entity implements Enemy{
                 }
                 if (MovementChecker.isMovementAllowed(this, map, new int[]{dx, dy})) {
                     this.move(dx, dy);
+                    isMovementCompleted = true;
+                    System.out.println(String.format("ent moved to %d %d", dx, dy));
                     return new int[]{dx, dy};
                 }
             }

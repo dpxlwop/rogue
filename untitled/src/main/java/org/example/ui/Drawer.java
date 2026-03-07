@@ -103,7 +103,6 @@ public class Drawer {
     }
 
     private void drawEnemies(ArrayList<Entity> enemies){
-        System.out.println(enemies.size());
         for (Entity e : enemies) {
             if (e != null) {
                 int[] cords = e.getCordXY();
@@ -112,4 +111,25 @@ public class Drawer {
         }
     }
 
+    public void drawWelcomeScreen() throws Exception{
+        screen.clear();
+        String[] welcome = new String[3];
+        welcome[0] = "RogueLike by Procluha";
+        welcome[1] = "v. Alpha 0.2";
+        welcome[2] = "Press any key to start...";
+        for (int i = 0; i < welcome.length; i++) {
+            welcome[i] = stringCenterizer(welcome[i]);
+        }
+        tg.putString(0, screenHeight / 2, welcome[0]);
+        tg.putString(0, screenHeight / 2 + 1, welcome[1]);
+        tg.putString(0, screenHeight / 2 + 3, welcome[2]);
+        screen.refresh();
+    }
+
+
+    private String stringCenterizer(String str) {
+        int spaces = (this.width - str.length()) / 2;
+        if (spaces < 0) spaces = 0;
+        return " ".repeat(spaces) + str;
+    }
 }
