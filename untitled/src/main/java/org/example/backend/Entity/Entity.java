@@ -23,6 +23,10 @@ public abstract class Entity {
         return health;
     }
 
+    public void setDamage(int damage){
+        this.health-=damage;
+    }
+
     public int getAgility() {
         return agility;
     }
@@ -48,4 +52,8 @@ public abstract class Entity {
     }
 
     public abstract char getSymbol();
+
+    public boolean isDead(){
+        return health <= 0;
+    }
 }

@@ -1,6 +1,10 @@
 package org.example.backend.Entity;
 import java.util.Random;
+
+import org.example.backend.Interaction.MovementChecker;
 import org.example.backend.MapGenerator.GameMap;
+import org.example.backend.Interaction.MovementCodes;
+
 
 public class Vampire extends Entity implements Enemy{
     private int evilness;
@@ -48,7 +52,7 @@ public class Vampire extends Entity implements Enemy{
             dx = 1;
             dy = 0;
         }
-        if (MovementChecker.isMovementAllowed(this, map, new int[]{dx, dy}, player)) {
+        if (MovementChecker.isMovementAllowed(this, map, new int[]{dx, dy}, player) == MovementCodes.ALLOW) {
             this.move(dx,dy);
         }
         return new int[]{dx, dy};
@@ -68,7 +72,7 @@ public class Vampire extends Entity implements Enemy{
                     dx = 0;
                     dy = rand.nextDouble() < 0.5 ? 1 : -1;
                 }
-                if (MovementChecker.isMovementAllowed(this, map, new int[]{dx, dy}, null)) {
+                if (MovementChecker.isMovementAllowed(this, map, new int[]{dx, dy}, null) == MovementCodes.ALLOW) {
                     this.move(dx, dy);
                     return new int[]{dx, dy};
                 }

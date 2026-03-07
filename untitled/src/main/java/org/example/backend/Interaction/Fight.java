@@ -1,0 +1,50 @@
+package org.example.backend.Interaction;
+
+import org.example.backend.Entity.Enemy;
+import org.example.backend.Entity.Entity;
+import org.example.backend.Entity.Player;
+
+import java.util.ArrayList;
+import java.util.Random;
+
+public class Fight {
+    public static Entity fight(Player player, ArrayList<Entity> enemies, int[] kickPos){
+        Entity enemy = null;
+        for (Entity e : enemies){
+            int[] playerPos = player.getCordXY();
+            int kickX = playerPos[0] + kickPos[0];
+            int kickY = playerPos[1] + kickPos[1];
+            if(e != null && e.getCordXY()[0] == kickX && e.getCordXY()[1] == kickY) {
+                enemy = e;
+                System.out.print(String.format("enemy: %s, hp: %d", enemy.getClass().getSimpleName(), enemy.getHealth()));
+                break;
+            }
+        }
+        if(enemy != null && isSuccessKick(enemy, player)){
+            int damage = getDamage(enemy, player);
+            confirmDamage(enemy, damage);s
+            return enemy;
+        }
+        return null;
+    }
+
+    private static int getDamage(Entity enemy, Entity attacker){
+        int attackerStrength = attacker.getStrength();
+        int enemyAgility = enemy.getAgility();
+        int damage = 1 + (attackerStrength - enemyAgility - 2);
+        return damage <= 0 ? 1 : damage;
+    }
+
+    private static boolean isSuccessKick(Entity enemy, Entity attacker){
+        double attackerAgility = attacker.getAgility() / 10.0;
+        Random rand = new Random();
+        if (rand.nextDouble() < 0.5 + attackerAgility){
+            return true;
+        }
+        return false;
+    }
+
+    private static void confirmDamage(Entity entity, int damage){
+        entity.setDamage(damage);
+    }
+}

@@ -1,12 +1,12 @@
 package org.example.backend;
 
-import org.example.backend.Entity.Enemy;
-import org.example.backend.Entity.Entity;
-import org.example.backend.Entity.MovementChecker;
-import org.example.backend.Entity.Player;
+import org.example.backend.Entity.*;
+import org.example.backend.Interaction.Fight;
+import org.example.backend.Interaction.MovementChecker;
 import org.example.backend.MapGenerator.GameMap;
 import org.example.ui.Drawer;
 import org.example.ui.KeyHandler;
+import org.example.backend.Interaction.MovementCodes;
 
 import java.util.ArrayList;
 
@@ -15,9 +15,15 @@ public class GameTick {
         boolean isPlayerCompletedMovement = false;
         while (!isPlayerCompletedMovement) {
             int[] playerMovement = keyHandler.handleInput(player);
-            if (MovementChecker.isMovementAllowed(player, map, playerMovement, player)) {
+            MovementCodes code = MovementChecker.isMovementAllowed(player, map, playerMovement, player);
+            if (code == MovementCodes.ALLOW) {
                 player.move(playerMovement[0], playerMovement[1]);
                 isPlayerCompletedMovement = true;
+            } else if (code == MovementCodes.FIGHT){
+                Entity enemy = Fight.fight(player, enemies, playerMovement);
+                if (enemy != null && enemy.isDead()){
+                    enemies.remove(enemy);
+                }
             }
         }
         for (Entity e : enemies) {
