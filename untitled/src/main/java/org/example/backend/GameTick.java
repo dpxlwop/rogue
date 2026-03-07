@@ -15,7 +15,7 @@ public class GameTick {
         boolean isPlayerCompletedMovement = false;
         while (!isPlayerCompletedMovement) {
             int[] playerMovement = keyHandler.handleInput(player);
-            if (MovementChecker.isMovementAllowed(player, map, playerMovement)) {
+            if (MovementChecker.isMovementAllowed(player, map, playerMovement, player)) {
                 player.move(playerMovement[0], playerMovement[1]);
                 isPlayerCompletedMovement = true;
             }
