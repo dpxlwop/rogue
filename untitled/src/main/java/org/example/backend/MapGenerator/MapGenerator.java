@@ -22,7 +22,7 @@ public class MapGenerator {
         generateAndCheckRooms();
         cutRooms();
         this.enemiesInRooms = new ArrayList<>();
-        for(int i = 0; i < ROOM_COUNT; i++) {
+        for(int i = 0; i < rooms.size(); i++) {
             if (i > 0) {
                 this.enemiesInRooms.add(rooms.get(i).getEnemyInRoom());
             }

@@ -1,11 +1,12 @@
 package org.example.backend.Entity;
 import java.util.Random;
-import org.example.backend.Entity.Entities;
 import org.example.backend.MapGenerator.GameMap;
 
 public class Zombie extends Entity implements Enemy{
-    public Zombie(int[] cordXY, int health, int agility, int strength){
-        super(cordXY, health, agility, strength);
+    private int evilness;
+    public Zombie(int[] cordXY){
+        super(cordXY, 10, 2, 6);
+        this.evilness = 6;
     }
 
     @Override
@@ -17,7 +18,7 @@ public class Zombie extends Entity implements Enemy{
     public int[] enemyWalking(GameMap map, Player player){
         int entityRoomId = map.getEntityRoomID(this);
         int playerRoomId = map.getEntityRoomID(player);
-        int[] movement = {0, 0};
+        int[] movement;
         if (entityRoomId == playerRoomId){
             movement = entityFollowsPlayer(map, player);
         } else{
@@ -26,8 +27,7 @@ public class Zombie extends Entity implements Enemy{
         return movement;
     }
 
-    @Override
-    public int[] entityFollowsPlayer(GameMap map, Player player){
+    private int[] entityFollowsPlayer(GameMap map, Player player){
         int playerX = player.getCordXY()[0], playerY = player.getCordXY()[1];
         int enemyX = this.cordXY[0], enemyY = this.cordXY[1];
         int dx = 0, dy = 0;
@@ -48,20 +48,17 @@ public class Zombie extends Entity implements Enemy{
             dx = 1;
             dy = 0;
         }
-        if (MovementChecker.isMovementAllowed(this, map, new int[]{dx, dy})) {
+        if (MovementChecker.isMovementAllowed(this, map, new int[]{dx, dy}, player)) {
             this.move(dx,dy);
         }
         return new int[]{dx, dy};
     }
 
-    @Override
-    public int[] entityRandomWalk(GameMap map){
+    private int[] entityRandomWalk(GameMap map){
         Random rand = new Random();
-        boolean isMovementCompleted;
         int dx, dy;
-        if (rand.nextDouble() < (this.getAgility() / 10.0 - 0.2)){        //получение вероятности хода
-            isMovementCompleted = false;
-            while (!isMovementCompleted) {
+        if (rand.nextDouble() < (this.getAgility() / 10.0)){        //получение вероятности хода
+            while (true) {
                 dx = 0;
                 dy = 0;
                 if (rand.nextDouble() < 0.5) {       //перемещение по x
@@ -71,10 +68,8 @@ public class Zombie extends Entity implements Enemy{
                     dx = 0;
                     dy = rand.nextDouble() < 0.5 ? 1 : -1;
                 }
-                if (MovementChecker.isMovementAllowed(this, map, new int[]{dx, dy})) {
+                if (MovementChecker.isMovementAllowed(this, map, new int[]{dx, dy}, null)) {
                     this.move(dx, dy);
-                    isMovementCompleted = true;
-                    System.out.println(String.format("ent moved to %d %d", dx, dy));
                     return new int[]{dx, dy};
                 }
             }

@@ -2,7 +2,11 @@ package org.example.backend.Entity;
 
 public enum Entities {
     PLAYER('@'),
-    ZOMBIE('Z');
+    ZOMBIE('Z'),
+    VAMPIRE('V'),
+    GHOST('G'),
+    OGRE('O'),
+    MAGICSNAKE('S');
     private char symbol;
 
     Entities(char symbol) {

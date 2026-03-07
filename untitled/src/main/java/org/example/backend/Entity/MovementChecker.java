@@ -4,7 +4,7 @@ import org.example.backend.MapGenerator.GameMap;
 import org.example.backend.Tile;
 
 public class MovementChecker {
-    public static boolean isMovementAllowed(Entity entity, GameMap mapGen, int[] movement) {
+    public static boolean isMovementAllowed(Entity entity, GameMap mapGen, int[] movement, Player player) {
 
         Tile[][] map = mapGen.getMap();
 
@@ -13,7 +13,7 @@ public class MovementChecker {
         int newX = pos[0] + movement[0];
         int newY = pos[1] + movement[1];
 
-        // проверка границ
+            // проверка границ
         if (newX < 0 || newY < 0 || newY >= map.length || newX >= map[0].length) {
             return false;
         }
