@@ -44,7 +44,7 @@ public class Drawer {
         screen.clear();
     }
 
-    public void stop() throws Exception {
+        public void stop() throws Exception {
         screen.stopScreen();
     }
 

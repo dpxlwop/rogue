@@ -25,7 +25,7 @@ public class Main {
         while (true) {
             KeyHandler keyHandler = new KeyHandler(drawer.getScreen());
             GameMap map = new GameMap(WIDTH, MAP_HEIGHT);
-            Player player = new Player(new int[]{1, 1}, 1, 1, 1);
+            Player player = new Player(new int[]{1, 1}, 10, 10, 10);
             map.spawnPlayer(player);
             ArrayList<Entity> Enemies = map.getEnemiesInRooms();
             drawer.drawWelcomeScreen();

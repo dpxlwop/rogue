@@ -2,6 +2,7 @@ package org.example.backend.Entity;
 import java.util.Random;
 
 import com.googlecode.lanterna.TextColor;
+import org.example.backend.Interaction.EnemyWalkingExitObj;
 import org.example.backend.Interaction.MovementChecker;
 import org.example.backend.MapGenerator.GameMap;
 import org.example.backend.Interaction.MovementCodes;
@@ -24,10 +25,10 @@ public class Vampire extends Entity implements Enemy{
     }
 
     @Override
-    public int[] enemyWalking(GameMap map, Player player){
+    public EnemyWalkingExitObj enemyWalking(GameMap map, Player player){
         int entityRoomId = map.getEntityRoomID(this);
         int playerRoomId = map.getEntityRoomID(player);
-        int[] movement;
+        EnemyWalkingExitObj movement;
         if (entityRoomId == playerRoomId){
             movement = entityFollowsPlayer(map, player);
         } else{
@@ -36,7 +37,7 @@ public class Vampire extends Entity implements Enemy{
         return movement;
     }
 
-    private int[] entityFollowsPlayer(GameMap map, Player player){
+    private EnemyWalkingExitObj entityFollowsPlayer(GameMap map, Player player){
         int playerX = player.getCordXY()[0], playerY = player.getCordXY()[1];
         int enemyX = this.cordXY[0], enemyY = this.cordXY[1];
         int dx = 0, dy = 0;
@@ -57,13 +58,14 @@ public class Vampire extends Entity implements Enemy{
             dx = 1;
             dy = 0;
         }
-        if (MovementChecker.isMovementAllowed(this, map, new int[]{dx, dy}, player) == MovementCodes.ALLOW) {
+        MovementCodes movementCode = MovementChecker.isMovementAllowed(this, map, new int[]{dx, dy}, player);
+        if (movementCode == MovementCodes.ALLOW) {
             this.move(dx,dy);
         }
-        return new int[]{dx, dy};
+        return new EnemyWalkingExitObj(this.getCordXY(), movementCode, this);
     }
 
-    private int[] entityRandomWalk(GameMap map){
+    private EnemyWalkingExitObj entityRandomWalk(GameMap map){
         Random rand = new Random();
         int dx, dy;
         if (rand.nextDouble() < (this.getAgility() / 10.0 - 0.2)){        //получение вероятности хода
@@ -77,14 +79,16 @@ public class Vampire extends Entity implements Enemy{
                     dx = 0;
                     dy = rand.nextDouble() < 0.5 ? 1 : -1;
                 }
-                if (MovementChecker.isMovementAllowed(this, map, new int[]{dx, dy}, null) == MovementCodes.ALLOW) {
+                MovementCodes movementCode = MovementChecker.isMovementAllowed(this, map, new int[]{dx, dy}, null);
+                if (movementCode == MovementCodes.ALLOW) {
                     this.move(dx, dy);
-                    return new int[]{dx, dy};
+                    return new EnemyWalkingExitObj(this.getCordXY(), movementCode, this);
                 }
             }
         }
-        return new int[]{0, 0};
+        return new EnemyWalkingExitObj(this.getCordXY(), MovementCodes.DENY, this);
     }
+
     @Override
     public TextColor getColor(){
         return TextColor.ANSI.RED;
