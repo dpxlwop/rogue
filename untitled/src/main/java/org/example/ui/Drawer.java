@@ -1,6 +1,8 @@
 package org.example.ui;
 import com.googlecode.lanterna.TextColor;
 import org.example.backend.Entity.Entity;
+import org.example.backend.Game;
+import org.example.backend.Item.Item;
 import org.example.backend.MapGenerator.GameMap;
 import org.example.backend.Tile;
 
@@ -62,32 +64,50 @@ public class Drawer {
         return left + " ".repeat(spaces) + right;
     }
 
-    private String[] getHUDasMatrix(Player player) {
+    private String[] getHUDasMatrix(Player player, Game game) {
         String[] hud = new String[2];
         hud[0] = whitespaceLine(
-                "Rogue-like by procluha",
-                String.format("Health: %d/%d", player.getHealth(), player.getMaxHealth())
-        );
-        hud[1] = whitespaceLine(
-                String.format("Agility: %d Strength: %d", player.getAgility(), player.getStrength()),
-                String.format("X: %d Y: %d", player.getCordXY()[0], player.getCordXY()[1])
-        );
+                String.format("Agility: %d Strength: %d",
+                        player.getAgility(),
+                        player.getStrength()),
+                String.format("Level: %d Health: %d/%d",
+                        game.getLevel(),
+                        player.getHealth(),
+                        player.getMaxHealth()));
+        hud[1] = stringCenterizer(getInventory(game));
         return hud;
     }
 
-    private void drawHUD(Player player){
-        String[] hud = getHUDasMatrix(player);
+    private void drawHUD(Player player, Game game){
+        String[] hud = getHUDasMatrix(player, game);
         for (int i = 0; i < hud.length; i++) {
             tg.putString(0, mapHeight + i, hud[i]);
         }
     }
 
-    public void draw(GameMap map, Player player, ArrayList<Entity> enemies) throws Exception {
+    private String getInventory(Game game) {
+        ArrayList<Item> backpack = game.getPlayer().getBackpack();
+        int slots = 9;
+        StringBuilder inventoryLine = new StringBuilder();
+        for (int i = 0; i < slots; i++) {
+            if (i < backpack.size() && backpack.get(i) != null) {
+                inventoryLine.append("[")
+                        .append(backpack.get(i).getSymbol())
+                        .append("]");
+            } else {
+                inventoryLine.append("[ ]");
+            }
+        }
+        return inventoryLine.toString();
+    }
+
+    public void draw(Game game) throws Exception {
         screen.clear();
-        drawField(map.getMap());
-        drawPlayer(player);
-        drawHUD(player);
-        drawEnemies(enemies, player.getCordXY());
+        drawField(game.getMap().getMap());
+        drawPlayer(game.getPlayer());
+        drawHUD(game.getPlayer(), game);
+        drawEnemies(game.getEnemiesOnLevel(), game.getPlayer().getCordXY());
+        drawItems(game.getItemsOnLevel(), game.getPlayer().getCordXY());
         screen.refresh();
     }
 
@@ -109,7 +129,7 @@ public class Drawer {
     private boolean isVisible(int playerX, int playerY, int entityX, int entityY){
         int dx = Math.abs(entityX - playerX);
         int dy = Math.abs(entityY - playerY);
-        return dx <= 7 && dy <= 7;
+        return dx <= 100 && dy <= 100;
     }
 
     private void drawEnemies(ArrayList<Entity> enemies, int[] playerCords){
@@ -124,6 +144,18 @@ public class Drawer {
         }
         tg.setForegroundColor(TextColor.ANSI.DEFAULT);
     }
+
+    private void drawItems(ArrayList<Item> items, int[] playerCords){
+        for (Item i : items){
+            if (i != null){
+                int[] cords = i.getCordXY();
+                if (isVisible(playerCords[0], playerCords[1], cords[0], cords[1])){
+                    tg.putString(cords[0], cords[1], String.valueOf(i.getSymbol()));
+                }
+            }
+        }
+    }
+
 
     public void drawWelcomeScreen() throws Exception{
         screen.clear();

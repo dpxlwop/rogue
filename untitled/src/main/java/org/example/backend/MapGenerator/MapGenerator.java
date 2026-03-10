@@ -2,6 +2,8 @@ package org.example.backend.MapGenerator;
 import org.example.backend.Entity.Entity;
 import org.example.backend.Entity.Player;
 import java.util.ArrayList;
+
+import org.example.backend.Item.Item;
 import org.example.backend.Tile;
 import org.example.backend.MapGenerator.Room;
 import java.util.Random;
@@ -12,6 +14,7 @@ public class MapGenerator {
     protected Tile[][] map;               //карта в виде двумерного массива тайлов
     protected ArrayList<Room> rooms;      //список комнат на карте
     private ArrayList<Entity> enemiesInRooms;
+    private ArrayList<Item> itemsOnLevel;
     private static final int ROOM_COUNT = 9;
     private static final int ROOM_PADDING = 2;
 
@@ -22,16 +25,22 @@ public class MapGenerator {
         generateAndCheckRooms();
         cutRooms();
         this.enemiesInRooms = new ArrayList<>();
+        this.itemsOnLevel = new ArrayList<>();
         for(int i = 0; i < rooms.size(); i++) {
-            if (i > 0) {
-                this.enemiesInRooms.add(rooms.get(i).getEnemyInRoom());
-            }
+            Entity enemy = rooms.get(i).getEnemyInRoom();
+            if(enemy != null) enemiesInRooms.add(enemy);
+            Item item = rooms.get(i).getItemInRoom();
+            if(item != null) itemsOnLevel.add(item);
         }
         this.map = CorridorGenerator.generateCorridors(this.map, this.rooms);
     }
 
     public ArrayList<Entity> getEnemiesInRooms(){
         return enemiesInRooms;
+    }
+
+    public ArrayList<Item> getItemsOnLevel(){
+        return itemsOnLevel;
     }
 
     private void init() {     //инициализация карты, делаем все стенами
@@ -111,4 +120,7 @@ public class MapGenerator {
         }
     }
 
+    public void addItemOnLevel(Item item){
+        this.itemsOnLevel.add(item);
+    }
 }

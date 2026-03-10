@@ -29,26 +29,49 @@ public class KeyHandler {
         int[] move = new int[]{0,0};
         if (key != null && key.getKeyType() == KeyType.Character) {
             switch (key.getCharacter()) {
-                case 'w' :
+                case 'w' -> {
                     move[0] = 0;
                     move[1] = -1;
-                    break;
-                case 's':
+                } case 's' -> {
                     move[0] = 0;
                     move[1] = 1;
-                    break;
-                case 'a':
+                } case 'a' -> {
                     move[0] = -1;
                     move[1] = 0;
-                    break;
-                case 'd':
+                } case 'd' -> {
                     move[0] = 1;
                     move[1] = 0;
-                    break;
-                case 'q':
+                } case 'q' -> {
                     move[0] = -999;
                     move[1] = -999;
-                    break;
+                } case '1' -> {
+                    move[0] = 100;       //для всех кнопок инвентаря move[0] = 100
+                    move[1] = 1;
+                } case '2' -> {
+                    move[0] = 100;
+                    move[1] = 2;
+                } case '3' -> {
+                    move[0] = 100;
+                    move[1] = 3;
+                } case '4' -> {
+                    move[0] = 100;
+                    move[1] = 4;
+                } case '5' -> {
+                    move[0] = 100;
+                    move[1] = 5;
+                } case '6' -> {
+                    move[0] = 100;
+                    move[1] = 6;
+                } case '7' -> {
+                    move[0] = 100;
+                    move[1] = 7;
+                } case '8' -> {
+                    move[0] = 100;
+                    move[1] = 8;
+                } case '9' -> {
+                    move[0] = 100;
+                    move[1] = 9;
+                }
             }
         }
         return move;

@@ -59,5 +59,17 @@ public abstract class Entity {
         return health <= 0;
     }
 
+    public void addHealth(int health){
+        this.health+=health;
+    }
+
+    public void addStrength(int strength) {
+        this.strength+=strength;
+    }
+
+    public void addAgility(int agility){
+        this.agility+=agility;
+    }
+
     public abstract TextColor getColor();
 }

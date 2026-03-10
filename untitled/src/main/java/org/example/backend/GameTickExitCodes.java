@@ -5,5 +5,6 @@ public enum GameTickExitCodes {
     GAME_OVER_PLAYER_DIED,
     GAME_OVER_WIN,
     GAME_OVER_BY_PLAYER,
-    ERROR;
+    ERROR,
+    NEXT_LEVEL;
 }

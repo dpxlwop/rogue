@@ -1,8 +1,10 @@
 package org.example.backend.MapGenerator;
 
 import org.example.backend.Entity.*;
+import org.example.backend.Item.*;
 
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Room {
     private int x;
@@ -10,16 +12,25 @@ public class Room {
     private int width;
     private int height;
     private Entity enemyInRoom;
+    private Item itemInRoom;
+    private Item exitItem;
 
     public Room(int x, int y, int width, int height) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
-        generateRandomEntity();
+        generateRandomLoot();
+        exitItem = null;
     }
 
-    private void generateRandomEntity(){
+    private static BuffAttributes selectRandomAttribute() {
+        BuffAttributes[] levels = BuffAttributes.values();
+        int randomIndex = ThreadLocalRandom.current().nextInt(0, levels.length);
+        return levels[randomIndex];
+    }
+
+    private void generateRandomLoot() {
         Random rand = new Random();
         if (rand.nextDouble() < 0.9) {
             int type = rand.nextInt(5);
@@ -31,6 +42,24 @@ public class Room {
                 case 4 -> this.enemyInRoom = new MagicSnake(this.getCenter());
             }
         }
+        if (rand.nextDouble() < 0.9) {
+            //TODO генерация предметов в комнате
+            //все остальное вроде дописано, отрисовка рюкзака
+            for (int i = 0; i < rand.nextInt(3); i++) {
+                int type = rand.nextInt(4);
+                int[] itempos = new int[]{this.getCenter()[0] + rand.nextInt(3), this.getCenter()[1] + rand.nextInt(3)};
+                switch (type) {
+                    case 0 -> this.itemInRoom = new Elix(selectRandomAttribute(), rand.nextInt(3)+1, itempos);
+                    case 1 -> this.itemInRoom = new Food(rand.nextInt(4) +1 , itempos);
+                    case 2 -> this.itemInRoom = new Roll(selectRandomAttribute(), rand.nextInt(3) + 1, itempos);
+                    case 3 -> this.itemInRoom = new Weapon(rand.nextInt(4) + 1, itempos);
+                }
+            }
+        }
+    }
+
+    public Item getItemInRoom(){
+        return itemInRoom;
     }
 
     public Entity getEnemyInRoom(){
@@ -55,6 +84,19 @@ public class Room {
 
     public int centerY() {
         return y + height / 2;
+    }
+
+    public Item getExitItem(){
+        return exitItem;
+    }
+
+    public void summonExitItem(Item exitItem){
+        this.exitItem = exitItem;
+    }
+
+    public void cleanUpRoom() {
+        itemInRoom = null;
+        enemyInRoom = null;
     }
 
 }

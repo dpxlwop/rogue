@@ -1,50 +1,47 @@
 package org.example;
 
-
-import org.example.backend.Entity.Entity;
-import org.example.backend.Entity.Zombie;
+import org.example.backend.Game;
 import org.example.backend.GameTickExitCodes;
-import org.example.ui.Drawer;
-import org.example.backend.MapGenerator.GameMap;
-import org.example.ui.KeyHandler;
-import org.example.backend.Entity.Player;
 import org.example.backend.GameTick;
-
-import java.util.ArrayList;
-
-import static org.example.backend.GameTick.gameTick;
+import org.example.backend.GameTick;
 
 
 public class Main {
-    public static final int WIDTH = 120;
-    public static final int MAP_HEIGHT = 38;
-    public static final int SCREEN_HEIGHT = 40;
+    private Game game;
+    private GameTick gameTick;
 
     public static void main(String[] args) throws Exception {
-        Drawer drawer = new Drawer(WIDTH, MAP_HEIGHT, SCREEN_HEIGHT);
         while (true) {
-            KeyHandler keyHandler = new KeyHandler(drawer.getScreen());
-            GameMap map = new GameMap(WIDTH, MAP_HEIGHT);
-            Player player = new Player(new int[]{1, 1}, 10, 10, 10);
-            map.spawnPlayer(player);
-            ArrayList<Entity> Enemies = map.getEnemiesInRooms();
-            drawer.drawWelcomeScreen();
+            Game game = new Game();
+            GameTick gameTick = new GameTick(game);
             boolean isPlayerDead = false;
             while (!isPlayerDead) {
-                GameTickExitCodes exitCode = gameTick(drawer, keyHandler, map, player, Enemies);
-                if (exitCode == GameTickExitCodes.GAME_OVER_BY_PLAYER) {
-                    drawer.drawQuitScreen();
+                GameTickExitCodes exitCode = gameTick.NextTick();
+                if (exitCode == GameTickExitCodes.NEXT_LEVEL){
+                    if (game.getLevel() == 21){
+                        game.getDrawer().drawWinScreen();
+                        Thread.sleep(5000);
+                        game.getDrawer().stop();
+                        return;
+                    } else{
+                        game.generateNextLevel();
+                        gameTick = new GameTick(game);
+                        game.getDrawer().draw(game);
+                    }
+
+                }else if (exitCode == GameTickExitCodes.GAME_OVER_BY_PLAYER) {
+                    game.getDrawer().drawQuitScreen();
                     Thread.sleep(5000);
-                    drawer.stop();
+                    game.getDrawer().stop();
                     return;
                 } else if (exitCode == GameTickExitCodes.GAME_OVER_PLAYER_DIED) {
-                    drawer.drawDeadScreen();
+                    game.getDrawer().drawDeadScreen();
                     isPlayerDead = true;
                     Thread.sleep(5000);
                 } else if (exitCode == GameTickExitCodes.GAME_OVER_WIN) {
-                    drawer.drawWinScreen();
+                    game.getDrawer().drawWinScreen();
                     Thread.sleep(5000);
-                    drawer.stop();
+                    game.getDrawer().stop();
                     return;
                 }
             }
