@@ -5,6 +5,7 @@ import org.example.backend.Entity.Enemy;
 import org.example.backend.Entity.Entity;
 import org.example.backend.Interaction.*;
 import org.example.backend.Item.Item;
+import org.example.backend.MapGenerator.Room;
 import org.example.ui.KeyHandler;
 
 public class GameTick {
@@ -56,6 +57,9 @@ public class GameTick {
                 Entity enemy = FightPlayerAgressor.playerAttacs(game.getPlayer(), game.getEnemiesOnLevel(), playerMovement);
                 if (enemy != null) {
                     if (enemy.isDead()) {
+                        int roomId = game.getMap().getEntityRoomID(enemy);
+                        int[] cords = enemy.getCordXY();
+                        game.addItemToMap(game.getMap().summonTreasure(5, cords[0], cords[1]));
                         game.removeEntityFromGame(enemy);
                     }
                     boolean isPlayerBeenAttacked = FightEntityAgressor.EntityAttacs(game.getPlayer(), enemy);

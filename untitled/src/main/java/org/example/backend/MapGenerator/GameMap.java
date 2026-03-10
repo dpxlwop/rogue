@@ -1,16 +1,19 @@
 package org.example.backend.MapGenerator;
 
 import org.example.backend.Entity.Enemy;
+import org.example.backend.Entity.Entities;
 import org.example.backend.Entity.Entity;
 import org.example.backend.Entity.Player;
 import org.example.backend.Item.ExitItem;
 import org.example.backend.Item.Item;
+import org.example.backend.Item.ItemsIcons;
+import org.example.backend.Item.Treasure;
 import org.example.backend.Tile;
 
 public class GameMap extends MapGenerator{
     public GameMap(int width, int height){
         super(width, height);
-        summonExitEntity();
+        summonExitItem();
     }
 
     public int[] getSize(){
@@ -21,7 +24,6 @@ public class GameMap extends MapGenerator{
         return map;
     }
 
-
     public Room spawnPlayer(Player player) {
         if (rooms.isEmpty()) return null;
         Room topRightRoom = getTopLeftRoom();
@@ -30,7 +32,7 @@ public class GameMap extends MapGenerator{
         return topRightRoom;
     }
 
-    private void summonExitEntity(){
+    private void summonExitItem(){
         Room bottomRightRoom = getBottomRightRoom();
         int cordX = bottomRightRoom.getPosition()[0] + bottomRightRoom.getSize()[0] - 1;
         int cordY = bottomRightRoom.getPosition()[1] + bottomRightRoom.getSize()[1] - 1;
@@ -39,6 +41,11 @@ public class GameMap extends MapGenerator{
         if(exitItem != null){
             this.addItemOnLevel(exitItem);
         }
+    }
+
+    public Treasure summonTreasure(int value, int cordX, int cordY){
+        Treasure treasure = new Treasure(5, new int[]{cordX, cordY});
+        return treasure;
     }
 
     public Room getTopLeftRoom(){

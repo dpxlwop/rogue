@@ -113,6 +113,12 @@ public class Game {
         removeItemAndEnemyFromFirstRoom(playerRoom);
     }
 
+    public void addItemToMap(Item item){
+        if (item != null){
+            itemsOnLevel.add(item);
+        }
+    }
+
 }
 
 

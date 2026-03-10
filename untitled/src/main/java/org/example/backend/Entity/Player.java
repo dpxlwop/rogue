@@ -11,11 +11,14 @@ public class Player extends Entity{
     private int weaponValue;
     private Weapon equipedWeapon;
     private Backpack backpack;
+    private int treasureCount;
 
     public Player(int[] cordXY, int health, int agility, int strength) {
         super(cordXY, health, agility, strength);
         this.maxHealth = health;
         this.backpack = new Backpack();
+        this.treasureCount = 0;
+
     }
 
     @Override
@@ -62,8 +65,11 @@ public class Player extends Entity{
     }
 
     public void pickUpItem(Item item){
-        this.backpack.addItemInBackpack(item);
-
+        if (item instanceof Treasure treasure){
+            this.treasureCount+=item.getItemValue();
+        } else{
+            this.backpack.addItemInBackpack(item);
+        }
     }
 
     public void useItem(int slotNumber){
@@ -75,5 +81,10 @@ public class Player extends Entity{
                 equipable.equip(this);
             this.backpack.removeItemFromBackpack(item);
         }
+    }
+
+
+    public int getTreasure(){
+        return treasureCount;
     }
 }

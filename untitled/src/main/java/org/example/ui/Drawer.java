@@ -26,6 +26,7 @@ public class Drawer {
     private int mapHeight;
     private int screenHeight;
     private static final Integer PLAYER_SIGHT_RADIUS=100;
+    private static final String VERSION="beta 2";
 
 
     public Drawer(int width, int mapHeight, int screenHeight) throws Exception {
@@ -67,9 +68,10 @@ public class Drawer {
     private String[] getHUDasMatrix(Player player, Game game) {
         String[] hud = new String[2];
         hud[0] = whitespaceLine(
-                String.format("Agility: %d Strength: %d",
+                String.format("Agility: %d Strength: %d Treasures: %d",
                         player.getAgility(),
-                        player.getStrength()),
+                        player.getStrength(),
+                        player.getTreasure()),
                 String.format("Level: %d Health: %d/%d",
                         game.getLevel(),
                         player.getHealth(),
@@ -162,7 +164,7 @@ public class Drawer {
         String[] welcome = new String[3];
         welcome[0] = "RogueLike by Procluha";
         welcome[1] = "Press any key to start...";
-        welcome[2] = "v. Beta 1";
+        welcome[2] = VERSION;
         for (int i = 0; i < welcome.length; i++) {
             welcome[i] = stringCenterizer(welcome[i]);
         }
@@ -184,7 +186,7 @@ public class Drawer {
         String[] welcome = new String[3];
         welcome[0] = "Thanks for playing Procluha's RogueLike";
         welcome[1] = "Game will close automatically in 5 seconds";
-        welcome[2] = "v. Alpha 0.2";
+        welcome[2] = VERSION;
         for (int i = 0; i < welcome.length; i++) {
             welcome[i] = stringCenterizer(welcome[i]);
         }
@@ -200,7 +202,7 @@ public class Drawer {
         welcome[0] = "You died!";
         welcome[1] = "Thanks for playing Procluha's RogueLike";
         welcome[2] = "Game will reload automatically in 5 seconds";
-        welcome[3] = "v. Alpha 0.2";
+        welcome[3] = VERSION;
         for (int i = 0; i < welcome.length; i++) {
             welcome[i] = stringCenterizer(welcome[i]);
         }
@@ -217,7 +219,7 @@ public class Drawer {
         welcome[0] = "You win!";
         welcome[1] = "Thanks for playing Procluha's RogueLike";
         welcome[2] = "Game will close automatically in 5 seconds";
-        welcome[3] = "v. Alpha 0.2";
+        welcome[3] = VERSION;
         for (int i = 0; i < welcome.length; i++) {
             welcome[i] = stringCenterizer(welcome[i]);
         }
