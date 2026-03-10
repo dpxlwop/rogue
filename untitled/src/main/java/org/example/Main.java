@@ -1,8 +1,7 @@
 package org.example;
 
-import org.example.backend.Game;
+import org.example.Game.Game;
 import org.example.backend.GameTickExitCodes;
-import org.example.backend.GameTick;
 import org.example.backend.GameTick;
 
 

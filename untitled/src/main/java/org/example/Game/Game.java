@@ -1,4 +1,4 @@
-package org.example.backend;
+package org.example.Game;
 
 import org.example.backend.Entity.Entity;
 import org.example.backend.Entity.Player;

@@ -1,9 +1,8 @@
 package org.example.ui;
 import com.googlecode.lanterna.TextColor;
 import org.example.backend.Entity.Entity;
-import org.example.backend.Game;
+import org.example.Game.Game;
 import org.example.backend.Item.Item;
-import org.example.backend.MapGenerator.GameMap;
 import org.example.backend.Tile;
 
 
@@ -26,6 +25,7 @@ public class Drawer {
     private int width;
     private int mapHeight;
     private int screenHeight;
+    private static final Integer PLAYER_SIGHT_RADIUS=100;
 
 
     public Drawer(int width, int mapHeight, int screenHeight) throws Exception {
@@ -129,7 +129,7 @@ public class Drawer {
     private boolean isVisible(int playerX, int playerY, int entityX, int entityY){
         int dx = Math.abs(entityX - playerX);
         int dy = Math.abs(entityY - playerY);
-        return dx <= 100 && dy <= 100;
+        return dx <= PLAYER_SIGHT_RADIUS && dy <= PLAYER_SIGHT_RADIUS;
     }
 
     private void drawEnemies(ArrayList<Entity> enemies, int[] playerCords){
@@ -162,7 +162,7 @@ public class Drawer {
         String[] welcome = new String[3];
         welcome[0] = "RogueLike by Procluha";
         welcome[1] = "Press any key to start...";
-        welcome[2] = "v. Alpha 0.2";
+        welcome[2] = "v. Beta 1";
         for (int i = 0; i < welcome.length; i++) {
             welcome[i] = stringCenterizer(welcome[i]);
         }

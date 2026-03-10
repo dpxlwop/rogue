@@ -1,15 +1,11 @@
 package org.example.backend;
 
-import org.example.backend.Entity.*;
+import org.example.Game.Game;
+import org.example.backend.Entity.Enemy;
+import org.example.backend.Entity.Entity;
 import org.example.backend.Interaction.*;
 import org.example.backend.Item.Item;
-import org.example.backend.MapGenerator.GameMap;
-import org.example.ui.Drawer;
 import org.example.ui.KeyHandler;
-import org.example.backend.Interaction.EnemyWalkingExitObj;
-
-import java.lang.management.MemoryPoolMXBean;
-import java.util.ArrayList;
 
 public class GameTick {
     private KeyHandler keyHandler;
@@ -66,8 +62,6 @@ public class GameTick {
                     if (isPlayerBeenAttacked)
                         if (game.getPlayer().isDead())
                             return GameTickExitCodes.GAME_OVER_PLAYER_DIED;
-                    if (game.getEnemiesOnLevel().isEmpty())
-                        return GameTickExitCodes.GAME_OVER_WIN;
                     return drawAndExit();
                 }
             }

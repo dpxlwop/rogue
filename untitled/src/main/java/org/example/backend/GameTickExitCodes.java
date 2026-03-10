@@ -6,5 +6,7 @@ public enum GameTickExitCodes {
     GAME_OVER_WIN,
     GAME_OVER_BY_PLAYER,
     ERROR,
-    NEXT_LEVEL;
+    NEXT_LEVEL,
+    CONTINUE,
+    PLAYER_NOT_COMPLETED_MOVE;
 }
