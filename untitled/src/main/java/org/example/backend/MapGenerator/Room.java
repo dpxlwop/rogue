@@ -14,13 +14,15 @@ public class Room {
     private Entity enemyInRoom;
     private Item itemInRoom;
     private Item exitItem;
+    private Random rand;
 
-    public Room(int x, int y, int width, int height) {
+    public Room(int x, int y, int width, int height, Player player, int level) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
-        generateRandomLoot();
+        rand = new Random();
+        generateRandomShitInRoom(player, level);
         exitItem = null;
     }
 
@@ -30,20 +32,33 @@ public class Room {
         return levels[randomIndex];
     }
 
-    private void generateRandomLoot() {
-        Random rand = new Random();
-        if (rand.nextDouble() < 0.9) {
-            int type = rand.nextInt(5);
+
+    private void generateRandomEntity(double chance){
+        double selectedEnemy = rand.nextDouble();
+        if (selectedEnemy < chance){
+            int type = rand.nextInt(3);
+            switch (type) {
+                case 0 -> this.enemyInRoom = new Vampire(this.getCenter());
+                case 1 -> this.enemyInRoom = new Ogre(this.getCenter());
+                case 2 -> this.enemyInRoom = new MagicSnake(this.getCenter());
+            }
+        } else{
+            int type = rand.nextInt(2);
             switch (type) {
                 case 0 -> this.enemyInRoom = new Zombie(this.getCenter());
-                case 1 -> this.enemyInRoom = new Vampire(this.getCenter());
-                case 2 -> this.enemyInRoom = new Ghost(this.getCenter());
-                case 3 -> this.enemyInRoom = new Ogre(this.getCenter());
-                case 4 -> this.enemyInRoom = new MagicSnake(this.getCenter());
+                case 1 -> this.enemyInRoom = new Ghost(this.getCenter());
             }
         }
+    }
+
+    private void generateRandomShitInRoom(Player player, int level) {
+
+        double chance = getChanceOfHardEnemy(level, player);
+
+        generateRandomEntity(chance);
+
         if (rand.nextDouble() < 0.9) {
-            //TODO генерация предметов в комнате
+            //TODO генерация нескольких предметов в комнате
             //все остальное вроде дописано, отрисовка рюкзака
             for (int i = 0; i < rand.nextInt(3); i++) {
                 int type = rand.nextInt(4);
@@ -55,6 +70,14 @@ public class Room {
                     case 3 -> this.itemInRoom = new Weapon(rand.nextInt(4) + 1, itempos);
                 }
             }
+        }
+    }
+
+    private double getChanceOfHardEnemy(int level, Player player){
+        if (level >= 15){
+            return 0.8;
+        } else{
+            return (level/100.0) + (player.getHealth() / 250.0) + (player.getAgility() / 100.0);
         }
     }
 

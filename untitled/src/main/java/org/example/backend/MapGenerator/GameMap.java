@@ -1,19 +1,24 @@
 package org.example.backend.MapGenerator;
 
-import org.example.backend.Entity.Enemy;
-import org.example.backend.Entity.Entities;
-import org.example.backend.Entity.Entity;
-import org.example.backend.Entity.Player;
+import org.example.backend.Entity.*;
 import org.example.backend.Item.ExitItem;
 import org.example.backend.Item.Item;
 import org.example.backend.Item.ItemsIcons;
 import org.example.backend.Item.Treasure;
 import org.example.backend.Tile;
 
+import java.lang.invoke.SwitchPoint;
+import java.util.Random;
+
 public class GameMap extends MapGenerator{
-    public GameMap(int width, int height){
-        super(width, height);
+    private Random rand;
+    private Player player;
+    private int level;
+
+    public GameMap(int width, int height, Player player, int level){
+        super(width, height, player, level);
         summonExitItem();
+        rand = new Random();
     }
 
     public int[] getSize(){
@@ -43,8 +48,22 @@ public class GameMap extends MapGenerator{
         }
     }
 
-    public Treasure summonTreasure(int value, int cordX, int cordY){
-        Treasure treasure = new Treasure(5, new int[]{cordX, cordY});
+    public Treasure summonTreasure(Entity deadEnemy, int cordX, int cordY){
+        int treasureValue = 0;
+
+        if (deadEnemy instanceof Ghost){
+            treasureValue = 5 * this.level / 2 + rand.nextInt(5);
+        }else if (deadEnemy instanceof MagicSnake){
+            treasureValue = 15 * this.level / 2 + rand.nextInt(5);
+        } else if (deadEnemy instanceof Ogre){
+            treasureValue = 10 * this.level / 2 + rand.nextInt(5);
+        } else if (deadEnemy instanceof Vampire){
+            treasureValue = 15 * this.level / 2 + rand.nextInt(5);
+        } else if (deadEnemy instanceof Zombie){
+            treasureValue = 5 * this.level / 2 + rand.nextInt(5);
+        }
+
+        Treasure treasure = new Treasure(treasureValue, new int[]{cordX, cordY});
         return treasure;
     }
 

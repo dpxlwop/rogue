@@ -10,6 +10,8 @@ import org.example.backend.Interaction.MovementCodes;
 
 public class Ogre extends Entity implements Enemy{
     private int evilness;
+    private boolean isStunned;
+
     public Ogre(int[] cordXY){
         super(cordXY, 14, 2, 14);
         this.evilness = 6;
@@ -17,6 +19,14 @@ public class Ogre extends Entity implements Enemy{
 
     public int getEvilness(){
         return this.evilness;
+    }
+
+    public void swapIsStunned(){
+        isStunned = !isStunned;
+    }
+
+    public boolean getIsStunned(){
+        return this.isStunned;
     }
 
     @Override
@@ -44,18 +54,18 @@ public class Ogre extends Entity implements Enemy{
         if (enemyY > playerY){
             //если мы выше игрока
             dx = 0;
-            dy = -2;
+            dy = -1;
         } else if(enemyY < playerY){
             //если мы ниже игрока
             dx = 0;
-            dy = 2;
+            dy = 1;
         } else if (enemyX > playerX) {
             //если мы левее игрока
-            dx = -2;
+            dx = -1;
             dy = 0;
         }  else if(enemyX < playerX) {
             //если мы правее игрока
-            dx = 2;
+            dx = 1;
             dy = 0;
         }
         MovementCodes movementCode = MovementChecker.isMovementAllowed(this, map, new int[]{dx, dy}, player);

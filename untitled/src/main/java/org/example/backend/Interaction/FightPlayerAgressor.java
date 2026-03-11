@@ -2,6 +2,7 @@ package org.example.backend.Interaction;
 
 import org.example.backend.Entity.Entity;
 import org.example.backend.Entity.Player;
+import org.example.backend.Entity.Vampire;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -20,7 +21,8 @@ public class FightPlayerAgressor {
                 break;
             }
         }
-        if(enemy != null && isSuccessKick(player)){
+        if(enemy != null && isSuccessKick(player, enemy)){
+            System.out.println("successful attack");
             int damage = getDamage(enemy, player);
             confirmDamage(enemy, damage);
             return enemy;
@@ -35,7 +37,13 @@ public class FightPlayerAgressor {
         return damage <= 0 ? 1 : damage;
     }
 
-    private static boolean isSuccessKick(Entity attacker){
+    private static boolean isSuccessKick(Entity attacker, Entity defender){
+        if (defender instanceof Vampire vamp){
+            if(vamp.isFirstKick()) {
+                vamp.addKick();
+                return false;
+            }
+        }
         double attackerAgility = attacker.getAgility() / 10.0;
         if (rand.nextDouble() < 0.5 + attackerAgility){
             return true;

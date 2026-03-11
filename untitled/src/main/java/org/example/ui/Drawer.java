@@ -26,7 +26,7 @@ public class Drawer {
     private int mapHeight;
     private int screenHeight;
     private static final Integer PLAYER_SIGHT_RADIUS=100;
-    private static final String VERSION="beta 2";
+    private static final String VERSION="beta 3";
 
 
     public Drawer(int width, int mapHeight, int screenHeight) throws Exception {

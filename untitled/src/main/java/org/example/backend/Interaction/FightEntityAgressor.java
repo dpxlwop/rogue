@@ -1,8 +1,6 @@
 package org.example.backend.Interaction;
 
-import org.example.backend.Entity.Enemy;
-import org.example.backend.Entity.Entity;
-import org.example.backend.Entity.Player;
+import org.example.backend.Entity.*;
 
 import java.util.Random;
 
@@ -11,13 +9,18 @@ public class FightEntityAgressor {
 
     public static boolean EntityAttacs(Player player, Entity enemy){
         int[] playerPos = player.getCordXY();
-        System.out.print("AAAAAATTACK ");
         int damage = 0;
         if(isSuccessKick(enemy)){
             damage = getDamage(player, enemy);
             confirmDamage(player, damage);
+            if (enemy instanceof Vampire vamp){
+                confirmMaxHealthDamage(player, rand.nextInt(2));
+            } else if( enemy instanceof MagicSnake mag){
+                if (rand.nextDouble() < 0.2 && !player.isStunned()){
+                    player.swapIsStunned();
+                }
+            }
         }
-        System.out.println(damage);
         return damage != 0;
     }
 
@@ -32,6 +35,14 @@ public class FightEntityAgressor {
         if (attacker instanceof Enemy) {
             double attackChance = attacker.getAgility() + ((Enemy) attacker).getEvilness()/ 10.0 + 0.2;
             if (rand.nextDouble() < attackChance) {
+                if (attacker instanceof Ogre ogre){
+                   if(ogre.getIsStunned()) {
+                       ogre.swapIsStunned();
+                       return false;
+                   } else {
+                       ogre.swapIsStunned();
+                   }
+                }
                 return true;
             }
         }
@@ -40,5 +51,11 @@ public class FightEntityAgressor {
 
     private static void confirmDamage(Entity entity, int damage){
         entity.setDamage(damage);
+    }
+
+    private static void confirmMaxHealthDamage(Entity entity, int damage){
+        if (entity instanceof Player player) {
+            player.damageMaxHealth(damage);
+        }
     }
 }

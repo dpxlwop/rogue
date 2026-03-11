@@ -26,8 +26,8 @@ public class Game {
         this.drawer = new Drawer(WIDTH, MAP_HEIGHT, SCREEN_HEIGHT);
         this.level = 1;
         this.keyHandler = new KeyHandler(drawer.getScreen());
-        this.map = new GameMap(WIDTH, MAP_HEIGHT);
         this.player = new Player(new int[]{1, 1}, 100, 10, 10);
+        this.map = new GameMap(WIDTH, MAP_HEIGHT, this.player, this.level);
         Room playerRoom = this.map.spawnPlayer(player);
         this.enemiesOnLevel = map.getEnemiesInRooms();
         this.itemsOnLevel = map.getItemsOnLevel();
@@ -106,7 +106,7 @@ public class Game {
 
     public void generateNextLevel(){
         this.level++;
-        this.map = new GameMap(WIDTH, MAP_HEIGHT);
+        this.map = new GameMap(WIDTH, MAP_HEIGHT, this.player, this.level);
         Room playerRoom = this.map.spawnPlayer(player);
         this.enemiesOnLevel = map.getEnemiesInRooms();
         this.itemsOnLevel = map.getItemsOnLevel();

@@ -12,13 +12,23 @@ public class Player extends Entity{
     private Weapon equipedWeapon;
     private Backpack backpack;
     private int treasureCount;
+    private boolean isStunned;
 
     public Player(int[] cordXY, int health, int agility, int strength) {
         super(cordXY, health, agility, strength);
         this.maxHealth = health;
         this.backpack = new Backpack();
         this.treasureCount = 0;
+        this.isStunned = false;
 
+    }
+
+    public boolean isStunned(){
+        return this.isStunned;
+    }
+
+    public void swapIsStunned(){
+        this.isStunned = !isStunned;
     }
 
     @Override
@@ -81,6 +91,10 @@ public class Player extends Entity{
                 equipable.equip(this);
             this.backpack.removeItemFromBackpack(item);
         }
+    }
+
+    public void damageMaxHealth(int damageMaxHealth){
+        this.maxHealth-=damageMaxHealth;
     }
 
 

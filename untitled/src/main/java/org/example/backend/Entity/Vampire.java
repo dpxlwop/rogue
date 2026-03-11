@@ -10,9 +10,12 @@ import org.example.backend.Interaction.MovementCodes;
 
 public class Vampire extends Entity implements Enemy{
     private int evilness;
+    private int kicks;
+
     public Vampire(int[] cordXY){
         super(cordXY, 6, 10, 6);
         this.evilness = 10;
+        this.kicks = 0;
     }
 
     public int getEvilness(){
@@ -87,6 +90,14 @@ public class Vampire extends Entity implements Enemy{
             }
         }
         return new EnemyWalkingExitObj(this.getCordXY(), MovementCodes.DENY, this);
+    }
+
+    public boolean isFirstKick(){
+        return this.kicks == 0;
+    }
+
+    public void addKick(){
+        this.kicks++;
     }
 
     @Override

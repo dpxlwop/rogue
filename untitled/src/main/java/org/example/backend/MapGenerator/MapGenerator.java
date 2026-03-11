@@ -17,10 +17,14 @@ public class MapGenerator {
     private ArrayList<Item> itemsOnLevel;
     private static final int ROOM_COUNT = 9;
     private static final int ROOM_PADDING = 2;
+    private Player player;
+    private int level;
 
-    public MapGenerator(int width, int height) {
+    public MapGenerator(int width, int height, Player player, int level) {
         this.width = width;
         this.height = height;
+        this.player = player;
+        this.level = level;
         init();
         boolean isRoomsGeneratedSuccessful = false;
         while (!isRoomsGeneratedSuccessful) {
@@ -81,13 +85,13 @@ public class MapGenerator {
             }
             int x = rand.nextInt(width - w - 1);
             int y = rand.nextInt(height - h - 1);
-            if (roomHasConflict(new Room(x, y, w, h))) {        //проверка на пересечение с другими комнатами
+            Room generatedRoom = new Room(x, y, w, h, this.player, this.level);
+            if (roomHasConflict(generatedRoom)) {        //проверка на пересечение с другими комнатами
                 attempts++;
                 i--;
                 continue;
             }
-            Room room = new Room(x, y, w, h);
-            rooms.add(room);
+            rooms.add(generatedRoom);
         }
     }
 

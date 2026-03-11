@@ -5,7 +5,7 @@ import com.googlecode.lanterna.TextColor;
 public abstract class Entity {
     protected int[] cordXY;
     protected int[] oldCordXY;
-    private int health;
+    protected int health;
     private int agility;
     private int strength;
 
