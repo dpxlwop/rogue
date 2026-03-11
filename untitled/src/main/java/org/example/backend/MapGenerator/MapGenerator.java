@@ -22,7 +22,15 @@ public class MapGenerator {
         this.width = width;
         this.height = height;
         init();
-        generateAndCheckRooms();
+        boolean isRoomsGeneratedSuccessful = false;
+        while (!isRoomsGeneratedSuccessful) {
+            generateAndCheckRooms();
+            if (rooms.size() == ROOM_COUNT) {
+                isRoomsGeneratedSuccessful = true;
+            } else {
+                rooms.clear();
+            }
+        }
         cutRooms();
         this.enemiesInRooms = new ArrayList<>();
         this.itemsOnLevel = new ArrayList<>();
