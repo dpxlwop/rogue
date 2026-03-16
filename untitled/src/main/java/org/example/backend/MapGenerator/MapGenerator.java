@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import org.example.backend.Item.Item;
 import org.example.backend.Tile;
-import org.example.backend.MapGenerator.Room;
+
 import java.util.Random;
 
 public class MapGenerator {
@@ -41,8 +41,11 @@ public class MapGenerator {
         for(int i = 0; i < rooms.size(); i++) {
             Entity enemy = rooms.get(i).getEnemyInRoom();
             if(enemy != null) enemiesInRooms.add(enemy);
-            Item item = rooms.get(i).getItemInRoom();
-            if(item != null) itemsOnLevel.add(item);
+            ArrayList<Item> items = rooms.get(i).getItemsInRoom();
+            for(Item item : items){
+                if(item != null) itemsOnLevel.add(item);
+            }
+
         }
         this.map = CorridorGenerator.generateCorridors(this.map, this.rooms);
     }

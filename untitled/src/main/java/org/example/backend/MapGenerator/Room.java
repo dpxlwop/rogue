@@ -3,6 +3,7 @@ package org.example.backend.MapGenerator;
 import org.example.backend.Entity.*;
 import org.example.backend.Item.*;
 
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -12,7 +13,7 @@ public class Room {
     private int width;
     private int height;
     private Entity enemyInRoom;
-    private Item itemInRoom;
+    private ArrayList<Item> itemsInRoom;
     private Item exitItem;
     private Random rand;
 
@@ -21,6 +22,7 @@ public class Room {
         this.y = y;
         this.width = width;
         this.height = height;
+        itemsInRoom = new ArrayList<>();
         rand = new Random();
         generateRandomShitInRoom(player, level);
         exitItem = null;
@@ -57,17 +59,22 @@ public class Room {
 
         generateRandomEntity(chance);
 
-        if (rand.nextDouble() < 0.9) {
+        if (rand.nextDouble() < 0.8 / level + 0.2) {
             //TODO генерация нескольких предметов в комнате
             //все остальное вроде дописано, отрисовка рюкзака
-            for (int i = 0; i < rand.nextInt(3); i++) {
+            int itemsCount;
+            if (rand.nextDouble() > 0.8 / level + 0.2)
+                itemsCount = 1;
+            else
+                itemsCount = rand.nextInt(4);
+            for (int i = 0; i < itemsCount; i++) {
                 int type = rand.nextInt(4);
                 int[] itempos = new int[]{this.getCenter()[0] + rand.nextInt(3), this.getCenter()[1] + rand.nextInt(3)};
                 switch (type) {
-                    case 0 -> this.itemInRoom = new Elix(selectRandomAttribute(), rand.nextInt(3)+1, itempos);
-                    case 1 -> this.itemInRoom = new Food(rand.nextInt(4) +1 , itempos);
-                    case 2 -> this.itemInRoom = new Roll(selectRandomAttribute(), rand.nextInt(3) + 1, itempos);
-                    case 3 -> this.itemInRoom = new Weapon(rand.nextInt(4) + 1, itempos);
+                    case 0 -> this.itemsInRoom.add(new Elix(selectRandomAttribute(), rand.nextInt(3)+1, itempos, rand.nextInt(16)+8));
+                    case 1 -> this.itemsInRoom.add(new Food(rand.nextInt(4) +1 , itempos));
+                    case 2 -> this.itemsInRoom.add(new Roll(selectRandomAttribute(), rand.nextInt(3) + 1, itempos));
+                    case 3 -> this.itemsInRoom.add(new Weapon(rand.nextInt(4) + 1, itempos));
                 }
             }
         }
@@ -81,8 +88,8 @@ public class Room {
         }
     }
 
-    public Item getItemInRoom(){
-        return itemInRoom;
+    public ArrayList<Item> getItemsInRoom(){
+        return itemsInRoom;
     }
 
     public Entity getEnemyInRoom(){
@@ -118,7 +125,7 @@ public class Room {
     }
 
     public void cleanUpRoom() {
-        itemInRoom = null;
+        itemsInRoom = null;
         enemyInRoom = null;
     }
 

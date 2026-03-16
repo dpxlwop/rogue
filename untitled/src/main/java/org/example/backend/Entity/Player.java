@@ -13,6 +13,7 @@ public class Player extends Entity{
     private Backpack backpack;
     private int treasureCount;
     private boolean isStunned;
+    private ArrayList<Elix> elixes;
 
     public Player(int[] cordXY, int health, int agility, int strength) {
         super(cordXY, health, agility, strength);
@@ -20,6 +21,7 @@ public class Player extends Entity{
         this.backpack = new Backpack();
         this.treasureCount = 0;
         this.isStunned = false;
+        this.elixes = new ArrayList<>();
 
     }
 
@@ -47,11 +49,13 @@ public class Player extends Entity{
 
     @Override
     public void move(int dx, int dy) {
+        reduceTicksInActiveElixes();        //привязка движения к увеличению тиков в элексире
         oldCordXY[0] = cordXY[0];
         oldCordXY[1] = cordXY[1];
 
         cordXY[0] += dx;
         cordXY[1] += dy;
+        checkElixDuration();                //проверяем истекшие и удаляем
 
     }
     public TextColor getColor(){
@@ -86,6 +90,9 @@ public class Player extends Entity{
         if(slotNumber >= 0 && slotNumber < backpack.getItemsCounter()) {
             Item item = this.getBackpack().get(slotNumber);
             if (item instanceof Usable usable) {
+                if (item instanceof Elix elix){
+                    addElix(elix);
+                }
                 usable.use(this);
             } else if (item instanceof Equipable equipable)
                 equipable.equip(this);
@@ -101,4 +108,26 @@ public class Player extends Entity{
     public int getTreasure(){
         return treasureCount;
     }
+
+    private void addElix(Elix elix){
+        this.elixes.add(elix);
+    }
+
+    private void reduceTicksInActiveElixes(){
+        for(Elix e : this.elixes){
+                e.reduceTick();
+        }
+    }
+
+    public void checkElixDuration(){
+        for (int i = 0; i < elixes.size(); i++) {
+            Elix e = elixes.get(i);
+            if (e != null && e.isExpired()) {
+                e.removeEffect(this);
+                elixes.remove(i);
+                i--;
+            }
+        }
+    }
+
 }
