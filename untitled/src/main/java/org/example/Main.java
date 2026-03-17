@@ -1,6 +1,7 @@
 package org.example;
 
 import org.example.Game.Game;
+import org.example.backend.Entity.Player;
 import org.example.backend.GameTickExitCodes;
 import org.example.backend.GameTick;
 
@@ -27,8 +28,7 @@ public class Main {
                         gameTick = new GameTick(game);
                         game.getDrawer().draw(game);
                     }
-
-                }else if (exitCode == GameTickExitCodes.GAME_OVER_BY_PLAYER) {
+                } else if (exitCode == GameTickExitCodes.GAME_OVER_BY_PLAYER) {
                     game.getDrawer().drawQuitScreen();
                     Thread.sleep(5000);
                     game.getDrawer().stop();

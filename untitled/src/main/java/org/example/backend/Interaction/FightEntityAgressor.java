@@ -24,6 +24,8 @@ public class FightEntityAgressor {
         return damage != 0;
     }
 
+    public s
+
     private static int getDamage(Player player, Entity attacker){
         int attackerStrength = attacker.getStrength();
         int playerAgility = player.getAgility();

@@ -26,7 +26,7 @@ public class Game {
         this.drawer = new Drawer(WIDTH, MAP_HEIGHT, SCREEN_HEIGHT);
         this.level = 1;
         this.keyHandler = new KeyHandler(drawer.getScreen());
-        this.player = new Player(new int[]{1, 1}, 100, 1000, 1000);
+        this.player = new Player(new int[]{1, 1}, 50, 50, 50);
         this.map = new GameMap(WIDTH, MAP_HEIGHT, this.player, this.level);
         Room playerRoom = this.map.spawnPlayer(player);
         this.enemiesOnLevel = map.getEnemiesInRooms();

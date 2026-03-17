@@ -21,13 +21,11 @@ public class GameTick {
         boolean isPlayerCompletedMovement = false;
         int[] playerCommand = this.keyHandler.handleInput(game.getPlayer());
 
-
-
         if (playerCommand[0] == -999)
             return GameTickExitCodes.GAME_OVER_BY_PLAYER;
 
         else if (playerCommand[0] == 100) {
-            game.getPlayer().useItem(playerCommand[1] - 1);
+            game.getPlayer().useItem(playerCommand[1] - 1, game.getMap());
             return drawAndExit();
         }
 

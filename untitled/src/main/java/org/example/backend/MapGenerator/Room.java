@@ -71,7 +71,7 @@ public class Room {
                 int type = rand.nextInt(4);
                 int[] itempos = new int[]{this.getCenter()[0] + rand.nextInt(3), this.getCenter()[1] + rand.nextInt(3)};
                 switch (type) {
-                    case 0 -> this.itemsInRoom.add(new Elix(selectRandomAttribute(), rand.nextInt(3)+1, itempos, rand.nextInt(16)+8));
+                    case 0 -> this.itemsInRoom.add(new Elix(selectRandomAttribute(), rand.nextInt(3)+1, itempos, rand.nextInt(256)+16));
                     case 1 -> this.itemsInRoom.add(new Food(rand.nextInt(4) +1 , itempos));
                     case 2 -> this.itemsInRoom.add(new Roll(selectRandomAttribute(), rand.nextInt(3) + 1, itempos));
                     case 3 -> this.itemsInRoom.add(new Weapon(rand.nextInt(4) + 1, itempos));

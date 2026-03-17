@@ -11,6 +11,10 @@ public abstract class Item {
         this.itemPos = pos;
     }
 
+    public void setItemPos(int[] pos){
+        this.itemPos = pos;
+    }
+
     public int[] getCordXY() {
         return itemPos;
     }

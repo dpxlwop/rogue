@@ -2,6 +2,7 @@ package org.example.backend.Entity;
 import com.googlecode.lanterna.TextColor;
 import org.example.backend.Entity.Entities;
 import org.example.backend.Item.*;
+import org.example.backend.MapGenerator.GameMap;
 
 import java.util.ArrayList;
 
@@ -65,13 +66,16 @@ public class Player extends Entity{
     public int equipWeapon(Weapon weapon){
         this.addStrength(weapon.getItemValue());
         this.weaponValue = weapon.getItemValue();
+        equipedWeapon = weapon;
         return this.getStrength();
     }
 
     public Weapon unEquipWeapon(){
-        this.addStrength(-1 * weaponValue);
+        this.addStrength(-weaponValue);
         weaponValue = 0;
-        return equipedWeapon;
+        Weapon oldWeapon = equipedWeapon;
+        equipedWeapon = null;
+        return oldWeapon;
     }
 
     public ArrayList<Item> getBackpack(){
@@ -86,18 +90,37 @@ public class Player extends Entity{
         }
     }
 
-    public void useItem(int slotNumber){
+    public void useItem(int slotNumber, GameMap map){
         if(slotNumber >= 0 && slotNumber < backpack.getItemsCounter()) {
             Item item = this.getBackpack().get(slotNumber);
-            if (item instanceof Usable usable) {
-                if (item instanceof Elix elix){
-                    addElix(elix);
-                }
+            if (item instanceof Elix elix){
+                addElix(elix);
+                elix.use(this);
+            } else if (item instanceof Usable usable) {
                 usable.use(this);
-            } else if (item instanceof Equipable equipable)
+            } else if (item instanceof Equipable equipable) {
+                if (isWeaponInUse()) {
+                    Item weapon = getEquipedWeapon();
+                    int[] playerPos = this.getCordXY();
+                    int[] weaponCords = new int[]{playerPos[0] + 1, playerPos[1] + 1};
+                    weapon.setItemPos(weaponCords);
+                    map.addItemOnLevel(weapon);
+                    unEquipWeapon();
+                }
                 equipable.equip(this);
+            }
             this.backpack.removeItemFromBackpack(item);
         }
+    }
+
+
+
+    public Item getEquipedWeapon(){
+        return this.equipedWeapon;
+    }
+
+    public boolean isWeaponInUse(){
+        return equipedWeapon != null;
     }
 
     public void damageMaxHealth(int damageMaxHealth){
@@ -122,12 +145,16 @@ public class Player extends Entity{
     public void checkElixDuration(){
         for (int i = 0; i < elixes.size(); i++) {
             Elix e = elixes.get(i);
-            if (e != null && e.isExpired()) {
+            if (e.isExpired()) {
                 e.removeEffect(this);
                 elixes.remove(i);
                 i--;
             }
         }
+        if(this.isDead()){
+            this.health = 1;
+        }
     }
+
 
 }
