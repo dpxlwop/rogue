@@ -4,7 +4,7 @@ import org.example.backend.Entity.Entity;
 import org.example.Game.Game;
 import org.example.backend.Item.Item;
 import org.example.backend.Tile;
-
+import org.example.backend.MessageLog;
 
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.screen.TerminalScreen;
@@ -103,11 +103,18 @@ public class Drawer {
         return inventoryLine.toString();
     }
 
+    private String getMessageLine(Game game) {
+        MessageLog messageLog = game.getMessageLog();
+        String message = messageLog.getCenteredMessage();
+        return stringCenterizer(message);
+    }
+
     public void draw(Game game) throws Exception {
         screen.clear();
         drawField(game.getMap().getMap());
         drawPlayer(game.getPlayer());
         drawHUD(game.getPlayer(), game);
+        drawMessage(game);
         drawEnemies(game.getEnemiesOnLevel(), game.getPlayer().getCordXY());
         drawItems(game.getItemsOnLevel(), game.getPlayer().getCordXY());
         screen.refresh();
@@ -156,6 +163,11 @@ public class Drawer {
                 }
             }
         }
+    }
+
+    private void drawMessage(Game game) {
+        String messageLine = getMessageLine(game);
+        tg.putString(0, mapHeight + 2, messageLine);
     }
 
 

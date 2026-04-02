@@ -90,14 +90,19 @@ public class Player extends Entity{
         }
     }
 
-    public void useItem(int slotNumber, GameMap map){
+    public String useItem(int slotNumber, GameMap map){
         if(slotNumber >= 0 && slotNumber < backpack.getItemsCounter()) {
             Item item = this.getBackpack().get(slotNumber);
             if (item instanceof Elix elix){
                 addElix(elix);
                 elix.use(this);
+                this.backpack.removeItemFromBackpack(item);
+                return String.format("Игрок использовал %s, увеличил %s на %d единиц", 
+                    item.getClass().getSimpleName(), elix.getAttributeToBuff(), elix.getItemValue());
             } else if (item instanceof Usable usable) {
                 usable.use(this);
+                this.backpack.removeItemFromBackpack(item);
+                return String.format("Игрок использовал %s", item.getClass().getSimpleName());
             } else if (item instanceof Equipable equipable) {
                 if (isWeaponInUse()) {
                     Item weapon = getEquipedWeapon();
@@ -108,9 +113,12 @@ public class Player extends Entity{
                     unEquipWeapon();
                 }
                 equipable.equip(this);
+                this.backpack.removeItemFromBackpack(item);
+                return String.format("Игрок экипировал %s", item.getClass().getSimpleName());
             }
             this.backpack.removeItemFromBackpack(item);
         }
+        return "";
     }
 
 

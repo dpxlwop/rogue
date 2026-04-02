@@ -1,5 +1,6 @@
 package org.example.backend.Interaction;
 
+import org.example.Game.Game;
 import org.example.backend.Entity.*;
 
 import java.util.Random;
@@ -7,7 +8,7 @@ import java.util.Random;
 public class FightEntityAgressor {
     static Random rand = new Random();
 
-    public static boolean EntityAttacs(Player player, Entity enemy){
+    public static boolean EntityAttacs(Player player, Entity enemy, Game game) {
         int[] playerPos = player.getCordXY();
         int damage = 0;
         if(isSuccessKick(enemy)){
@@ -20,11 +21,14 @@ public class FightEntityAgressor {
                     player.swapIsStunned();
                 }
             }
+            if (game != null) {
+                game.getMessageLog().addMessage(String.format("%s атаковал игрока! Нанес %d урона",
+                        enemy.getClass().getSimpleName(), damage));
+            }
         }
         return damage != 0;
     }
 
-    public s
 
     private static int getDamage(Player player, Entity attacker){
         int attackerStrength = attacker.getStrength();
@@ -35,8 +39,8 @@ public class FightEntityAgressor {
 
     private static boolean isSuccessKick(Entity attacker){
         if (attacker instanceof Enemy) {
-            double attackChance = attacker.getAgility() + ((Enemy) attacker).getEvilness()/ 10.0 + 0.2;
-            if (rand.nextDouble() < attackChance) {
+            double attackChance = attacker.getAgility() / 10.0 + ((Enemy) attacker).getEvilness()/ 10.0 + 0.2;
+            if (rand.nextDouble() < Math.min(attackChance, 1.0)) {
                 if (attacker instanceof Ogre ogre){
                    if(ogre.getIsStunned()) {
                        ogre.swapIsStunned();

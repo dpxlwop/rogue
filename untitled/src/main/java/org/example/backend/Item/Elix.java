@@ -42,6 +42,9 @@ public class Elix extends Item implements Usable{
         return durationTicks == ticksActive;
     }
 
+    public BuffAttributes getAttributeToBuff(){
+        return this.attributeToBuff;
+    }
 
     @Override
     public char getSymbol(){

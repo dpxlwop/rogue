@@ -5,6 +5,7 @@ import org.example.backend.Entity.Player;
 import org.example.backend.Item.Item;
 import org.example.backend.MapGenerator.GameMap;
 import org.example.backend.MapGenerator.Room;
+import org.example.backend.MessageLog;
 import org.example.ui.Drawer;
 import org.example.ui.KeyHandler;
 
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 public class Game {
     private final int WIDTH = 120;
     private final int MAP_HEIGHT = 38;
-    private final int SCREEN_HEIGHT = 40;
+    private final int SCREEN_HEIGHT = 41;
     private Drawer drawer;
     private int level;
     private KeyHandler keyHandler;
@@ -21,8 +22,10 @@ public class Game {
     private Player player;
     private ArrayList<Entity> enemiesOnLevel;
     private ArrayList<Item> itemsOnLevel;
+    private MessageLog messageLog;
 
     public Game() throws Exception {
+        this.messageLog = new MessageLog();
         this.drawer = new Drawer(WIDTH, MAP_HEIGHT, SCREEN_HEIGHT);
         this.level = 1;
         this.keyHandler = new KeyHandler(drawer.getScreen());
@@ -119,6 +122,10 @@ public class Game {
         if (item != null){
             itemsOnLevel.add(item);
         }
+    }
+
+    public MessageLog getMessageLog(){
+        return this.messageLog;
     }
 
 }

@@ -3,8 +3,11 @@ package org.example.backend;
 import org.example.Game.Game;
 import org.example.backend.Entity.Enemy;
 import org.example.backend.Entity.Entity;
+import org.example.backend.Entity.Player;
 import org.example.backend.Interaction.*;
 import org.example.backend.Item.Item;
+import org.example.backend.Item.Elix;
+import org.example.backend.Item.BuffAttributes;
 import org.example.backend.MapGenerator.Room;
 import org.example.ui.KeyHandler;
 
@@ -18,14 +21,16 @@ public class GameTick {
     }
 
     public GameTickExitCodes NextTick() throws Exception {
-        boolean isPlayerCompletedMovement = false;
         int[] playerCommand = this.keyHandler.handleInput(game.getPlayer());
 
         if (playerCommand[0] == -999)
             return GameTickExitCodes.GAME_OVER_BY_PLAYER;
 
         else if (playerCommand[0] == 100) {
-            game.getPlayer().useItem(playerCommand[1] - 1, game.getMap());
+            String message = game.getPlayer().useItem(playerCommand[1] - 1, game.getMap());
+            if (!message.isEmpty()) {
+                game.getMessageLog().addMessage(message);
+            }
             return drawAndExit();
         }
 
@@ -53,6 +58,7 @@ public class GameTick {
     }
 
     private GameTickExitCodes drawAndExit() throws Exception{
+        this.game.getMessageLog().nextTick();
         this.game.getDrawer().draw(game);
         return GameTickExitCodes.OK;
     }
@@ -62,11 +68,11 @@ public class GameTick {
             if (entity instanceof Enemy a) {
                 EnemyWalkingExitObj exitObj = a.enemyWalking(game.getMap(), game.getPlayer());
                 if (exitObj.getExitCode() == MovementCodes.FIGHT) {
-                    boolean isPlayerBeenAttacked = FightEntityAgressor.EntityAttacs(game.getPlayer(), entity);
-                    System.out.println(String.format("EntityAttacs %d, player new hp: %d", entity.getHealth(), game.getPlayer().getHealth()));
-                    if (isPlayerBeenAttacked)
+                    boolean isPlayerBeenAttacked = FightEntityAgressor.EntityAttacs(game.getPlayer(), entity, this.game);
+                    if (isPlayerBeenAttacked) {
                         if (game.getPlayer().isDead())
                             return GameTickExitCodes.GAME_OVER_PLAYER_DIED;
+                    }
                 }
             }
         }
@@ -93,14 +99,14 @@ public class GameTick {
             Item item = game.getItemByCords(newX, newY);
             if (item != null) {
                 game.getPlayer().pickUpItem(item);
-                System.out.println(item.getClass().getSimpleName());
+                game.getMessageLog().addMessage(String.format("Игрок подобрал предмет: %s", item.getClass().getSimpleName()));
                 game.removeItemFromGame(item);
             }
             game.getPlayer().move(playerMovement[0], playerMovement[1]);
             return GameTickExitCodes.CONTINUE;
 
         } else if (code == MovementCodes.FIGHT) {
-            Entity enemy = FightPlayerAgressor.playerAttacs(game.getPlayer(), game.getEnemiesOnLevel(), playerMovement);
+            Entity enemy = FightPlayerAgressor.playerAttacs(game.getPlayer(), game.getEnemiesOnLevel(), playerMovement, game);
             if (enemy != null) {
                 if (enemy.isDead()) {
                     int roomId = game.getMap().getEntityRoomID(enemy);
@@ -108,10 +114,14 @@ public class GameTick {
                     game.addItemToMap(game.getMap().summonTreasure(enemy, cords[0], cords[1]));
                     game.removeEntityFromGame(enemy);
                 }
-                boolean isPlayerBeenAttacked = FightEntityAgressor.EntityAttacs(game.getPlayer(), enemy);
-                if (isPlayerBeenAttacked)
+                boolean isPlayerBeenAttacked = FightEntityAgressor.EntityAttacs(game.getPlayer(), enemy, this.game);
+                if (isPlayerBeenAttacked) {
                     if (game.getPlayer().isDead())
                         return GameTickExitCodes.GAME_OVER_PLAYER_DIED;
+                } else {
+                    game.getMessageLog().addMessage(String.format("Игрок промахнулся по %s", 
+                        enemy.getClass().getSimpleName()));
+                }
                 return drawAndExit();
             }
         }
