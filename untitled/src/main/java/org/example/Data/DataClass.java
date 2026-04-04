@@ -49,4 +49,24 @@ public class DataClass {
         if (file.exists()) file.delete();
     }
 
+    public static void saveLeaderBoard(LeaderBoard lb) throws IOException {
+        File file = new File(LEADERBOARDPATH);
+        file.getParentFile().mkdirs();
+        mapper.writeValue(file, lb);
+    }
+
+    public static LeaderBoard loadLeaderBoard() {
+        File file = new File(LEADERBOARDPATH);
+        if (!file.exists() || file.length() == 0) {
+            return new LeaderBoard(null);
+        }
+        try {
+            return mapper.readValue(file, LeaderBoard.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new LeaderBoard(null);
+        }
+    }
+
+
 }

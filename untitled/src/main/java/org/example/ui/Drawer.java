@@ -1,6 +1,7 @@
 package org.example.ui;
 import com.googlecode.lanterna.TextColor;
 import org.example.Config;
+import org.example.Data.Score;
 import org.example.backend.Entity.Entity;
 import org.example.Game.Game;
 import org.example.backend.Item.Item;
@@ -170,20 +171,34 @@ public class Drawer {
     }
 
 
-    public void drawWelcomeScreen() throws Exception{
+    public void drawWelcomeScreen(ArrayList<Score> scores) throws Exception {
         screen.clear();
+        tg.putString(0, 0, stringCenterizer("Leaders"));
+        int max = Math.min(5, scores.size());
+        for (int i = 0; i < max; i++) {
+            Score s = scores.get(i);
+            String line = (i + 1) + ". " + s.getScore();
+            tg.putString(0, i + 1, stringCenterizer(line));
+        }
+        for (int i = max; i < 5; i++) {
+            tg.putString(0, i + 1, stringCenterizer((i + 1) + ". -"));
+        }
+        // --- WELCOME ---
         String[] welcome = new String[4];
         welcome[0] = "RogueLike by Procluha";
         welcome[1] = "If you want to load previous game press 'y'";
         welcome[2] = "Press any other key to start new game";
         welcome[3] = Config.VERSION;
+
         for (int i = 0; i < welcome.length; i++) {
             welcome[i] = stringCenterizer(welcome[i]);
         }
+
         tg.putString(0, screenHeight / 2, welcome[0]);
         tg.putString(0, screenHeight / 2 + 2, welcome[1]);
         tg.putString(0, screenHeight / 2 + 3, welcome[2]);
         tg.putString(0, screenHeight - 1, welcome[3]);
+
         screen.refresh();
     }
 

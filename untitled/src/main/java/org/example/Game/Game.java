@@ -15,8 +15,10 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class Game {
+    private UUID id;
     private int level;
     private GameMap map;
     private Player player;
@@ -29,6 +31,7 @@ public class Game {
 
 
     public Game() throws Exception {
+        id = UUID.randomUUID();
         this.messageLog = new MessageLog();
         this.level = 1;
         this.player = new Player(new int[]{1, 1}, 50, 50, 50);
@@ -40,12 +43,14 @@ public class Game {
     }
 
     @JsonCreator
-    public Game(@JsonProperty("level") int jsonLevel,
+    public Game(@JsonProperty("id") UUID id,
+                @JsonProperty("level") int jsonLevel,
                 @JsonProperty("map") GameMap jsonMap,
                 @JsonProperty("player") Player player,
                 @JsonProperty("enemiesOnLevel") ArrayList<Entity> jsonEnemies,
                 @JsonProperty("itemsOnLevel") ArrayList<Item> jsonItems
                 ) throws Exception {
+        this.id = id;
         this.messageLog = new MessageLog();
         this.level = jsonLevel;
         this.map = jsonMap;
@@ -54,6 +59,10 @@ public class Game {
         this.itemsOnLevel = (jsonItems != null) ? jsonItems : new ArrayList<>();
         this.enemiesOnLevel = map.getEnemiesInRooms();
         this.itemsOnLevel = map.getItemsOnLevel();
+    }
+
+    public UUID getID() {
+        return id;
     }
 
     public void setUiMaster(UiMaster uiMaster) throws Exception {
