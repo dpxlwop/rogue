@@ -6,8 +6,7 @@ import org.example.backend.Interaction.EnemyWalkingExitObj;
 import org.example.backend.Interaction.MovementChecker;
 import org.example.backend.MapGenerator.GameMap;
 import org.example.backend.Interaction.MovementCodes;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+
 
 public class Ghost extends Entity implements Enemy{
 

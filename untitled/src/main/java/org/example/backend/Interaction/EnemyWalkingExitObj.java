@@ -15,9 +15,6 @@ public class EnemyWalkingExitObj {
         this.entity = entity;
     }
 
-    public int[] getCords(){
-        return cords;
-    }
 
     public MovementCodes getExitCode(){
         return exitCode;

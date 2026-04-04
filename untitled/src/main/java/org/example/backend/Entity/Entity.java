@@ -1,8 +1,7 @@
 package org.example.backend.Entity;
 
 import com.googlecode.lanterna.TextColor;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 
@@ -56,10 +55,6 @@ public abstract class Entity {
 
     public int getStrength() {
         return strength;
-    }
-
-    public int[] getOldPos(){
-        return oldCordXY;
     }
 
     public void move(int dx, int dy) {

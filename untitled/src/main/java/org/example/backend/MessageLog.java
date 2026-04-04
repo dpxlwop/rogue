@@ -25,10 +25,6 @@ public class MessageLog {
         }
     }
 
-    public List<String> getMessages() {
-        return new ArrayList<>(messages);
-    }
-
     public String getCenteredMessage() {
         if (messages.isEmpty()) {
             return "";
@@ -47,10 +43,5 @@ public class MessageLog {
             messages.remove(0);
             messageTicks.remove(0);
         }
-    }
-
-    public void clear() {
-        messages.clear();
-        messageTicks.clear();
     }
 }

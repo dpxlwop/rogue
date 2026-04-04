@@ -4,5 +4,4 @@ import org.example.backend.Entity.Player;
 
 public interface Equipable {
     public void equip(Player player);
-    public void unEquip(Player player);
 }

@@ -15,10 +15,6 @@ public class Weapon extends Item implements Equipable {
         player.equipWeapon(this);
     }
 
-    public void unEquip(Player player){
-        player.unEquipWeapon();
-    }
-
     @Override
     public char getSymbol(){
         return ItemsIcons.WEAPON.getSymbol();
