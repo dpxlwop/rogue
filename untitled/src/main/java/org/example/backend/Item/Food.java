@@ -1,10 +1,13 @@
 package org.example.backend.Item;
-
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.example.backend.Entity.Player;
 
 public class Food  extends Item implements Usable {
 
-    public Food(int healingValue, int[] itemPos){
+    @JsonCreator
+    public Food(@JsonProperty("healingValue") int healingValue,
+                @JsonProperty("itemPos") int[] itemPos){
         super(healingValue, itemPos);
 
     }

@@ -6,20 +6,22 @@ import org.example.backend.Interaction.EnemyWalkingExitObj;
 import org.example.backend.Interaction.MovementChecker;
 import org.example.backend.MapGenerator.GameMap;
 import org.example.backend.Interaction.MovementCodes;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 public class Vampire extends Entity implements Enemy{
-    private int evilness;
     private int kicks;
+
+    public Vampire(){}
 
     public Vampire(int[] cordXY){
         super(cordXY, 6, 10, 6);
-        this.evilness = 10;
         this.kicks = 0;
     }
 
     public int getEvilness(){
-        return this.evilness;
+        return 10;
     }
 
     @Override

@@ -2,10 +2,12 @@ package org.example.backend.MapGenerator;
 
 import org.example.backend.Entity.*;
 import org.example.backend.Item.*;
-
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Room {
     private int x;
@@ -15,9 +17,10 @@ public class Room {
     private Entity enemyInRoom;
     private ArrayList<Item> itemsInRoom;
     private Item exitItem;
+    @JsonIgnore
     private Random rand;
 
-    public Room(int x, int y, int width, int height, Player player, int level) {
+    public Room(int x, int y, int width, int height, int level, Player player) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -26,6 +29,24 @@ public class Room {
         rand = new Random();
         generateRandomShitInRoom(player, level);
         exitItem = null;
+    }
+
+    @JsonCreator
+    public Room(@JsonProperty("x") int x,
+                @JsonProperty("y") int y,
+                @JsonProperty("width") int width,
+                @JsonProperty("height") int height,
+                @JsonProperty("enemyInRoom") Entity enemyInRoom,
+                @JsonProperty("itemsInRoom") ArrayList<Item> itemsInRoom,
+                @JsonProperty("exitItem") Item exitItem) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.enemyInRoom = enemyInRoom;
+        this.itemsInRoom = (itemsInRoom != null) ? itemsInRoom : new ArrayList<>();
+        this.exitItem = exitItem;
+        this.rand = new Random();
     }
 
     private static BuffAttributes selectRandomAttribute() {
@@ -60,8 +81,6 @@ public class Room {
         generateRandomEntity(chance);
 
         if (rand.nextDouble() < 0.8 / level + 0.2) {
-            //TODO генерация нескольких предметов в комнате
-            //все остальное вроде дописано, отрисовка рюкзака
             int itemsCount;
             if (rand.nextDouble() > 0.8 / level + 0.2)
                 itemsCount = 1;

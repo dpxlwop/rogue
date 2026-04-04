@@ -1,11 +1,15 @@
 package org.example.backend.Item;
-
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.example.backend.Entity.Player;
 
 public class Roll extends Item implements Usable{
     private BuffAttributes attributeToBuff;
 
-    public Roll(BuffAttributes attributeToBuff, int buffValue, int[] itemPos){
+    @JsonCreator
+    public Roll(@JsonProperty("attributeToBuff") BuffAttributes attributeToBuff,
+                @JsonProperty("buffValue") int buffValue,
+                @JsonProperty("itemPos") int[] itemPos){
         super(buffValue, itemPos);
         this.attributeToBuff = attributeToBuff;
     }

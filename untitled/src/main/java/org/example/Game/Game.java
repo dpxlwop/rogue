@@ -1,5 +1,6 @@
 package org.example.Game;
 
+import org.example.Config;
 import org.example.backend.Entity.Entity;
 import org.example.backend.Entity.Player;
 import org.example.backend.Item.Item;
@@ -8,34 +9,56 @@ import org.example.backend.MapGenerator.Room;
 import org.example.backend.MessageLog;
 import org.example.ui.Drawer;
 import org.example.ui.KeyHandler;
+import org.example.ui.UiMaster;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 
 public class Game {
-    private final int WIDTH = 120;
-    private final int MAP_HEIGHT = 38;
-    private final int SCREEN_HEIGHT = 41;
-    private Drawer drawer;
     private int level;
-    private KeyHandler keyHandler;
     private GameMap map;
     private Player player;
     private ArrayList<Entity> enemiesOnLevel;
     private ArrayList<Item> itemsOnLevel;
+    @JsonIgnore
     private MessageLog messageLog;
+    @JsonIgnore
+    private UiMaster uiMaster;
+
 
     public Game() throws Exception {
         this.messageLog = new MessageLog();
-        this.drawer = new Drawer(WIDTH, MAP_HEIGHT, SCREEN_HEIGHT);
         this.level = 1;
-        this.keyHandler = new KeyHandler(drawer.getScreen());
         this.player = new Player(new int[]{1, 1}, 50, 50, 50);
-        this.map = new GameMap(WIDTH, MAP_HEIGHT, this.player, this.level);
+        this.map = new GameMap(1, this.player);
         Room playerRoom = this.map.spawnPlayer(player);
         this.enemiesOnLevel = map.getEnemiesInRooms();
         this.itemsOnLevel = map.getItemsOnLevel();
         removeItemAndEnemyFromFirstRoom(playerRoom);
-        this.drawer.drawWelcomeScreen();
+    }
+
+    @JsonCreator
+    public Game(@JsonProperty("level") int jsonLevel,
+                @JsonProperty("map") GameMap jsonMap,
+                @JsonProperty("player") Player player,
+                @JsonProperty("enemiesOnLevel") ArrayList<Entity> jsonEnemies,
+                @JsonProperty("itemsOnLevel") ArrayList<Item> jsonItems
+                ) throws Exception {
+        this.messageLog = new MessageLog();
+        this.level = jsonLevel;
+        this.map = jsonMap;
+        this.player = player;
+        this.enemiesOnLevel = (jsonEnemies != null) ? jsonEnemies : new ArrayList<>();
+        this.itemsOnLevel = (jsonItems != null) ? jsonItems : new ArrayList<>();
+        this.enemiesOnLevel = map.getEnemiesInRooms();
+        this.itemsOnLevel = map.getItemsOnLevel();
+    }
+
+    public void setUiMaster(UiMaster uiMaster) throws Exception {
+        this.uiMaster = uiMaster;
+        this.uiMaster.getDrawer().draw(this);
     }
 
     public void removeItemAndEnemyFromFirstRoom(Room room){
@@ -56,24 +79,14 @@ public class Game {
         return this.itemsOnLevel;
     }
 
-    public int getWIDTH(){
-        return this.WIDTH;
-    }
-
-    public int getMAP_HEIGHT(){
-        return this.MAP_HEIGHT;
-    }
-
-    public int getSCREEN_HEIGHT(){
-        return this.SCREEN_HEIGHT;
-    }
 
     public int getLevel(){
         return this.level;
     }
 
+    @JsonIgnore
     public KeyHandler getKeyHandler(){
-        return this.keyHandler;
+        return this.uiMaster.getKeyHandler();
     }
 
     public Player getPlayer(){
@@ -84,8 +97,9 @@ public class Game {
         return this.map;
     }
 
+    @JsonIgnore
     public Drawer getDrawer(){
-        return this.drawer;
+        return this.uiMaster.getDrawer();
     }
 
     public Item getItemByCords(int cordX, int cordY){
@@ -111,7 +125,7 @@ public class Game {
 
     public void generateNextLevel(){
         this.level++;
-        this.map = new GameMap(WIDTH, MAP_HEIGHT, this.player, this.level);
+        this.map = new GameMap(this.level, this.player);
         Room playerRoom = this.map.spawnPlayer(player);
         this.enemiesOnLevel = map.getEnemiesInRooms();
         this.itemsOnLevel = map.getItemsOnLevel();
@@ -124,8 +138,14 @@ public class Game {
         }
     }
 
+    @JsonIgnore
     public MessageLog getMessageLog(){
         return this.messageLog;
+    }
+
+    @JsonIgnore
+    public UiMaster getUiMaster(){
+        return this.uiMaster;
     }
 
 }

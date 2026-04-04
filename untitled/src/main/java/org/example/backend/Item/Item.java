@@ -1,12 +1,31 @@
 package org.example.backend.Item;
 
-import org.example.backend.Entity.Entities;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.example.backend.Entity.*;
 
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type"
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Elix.class, name = "elix"),
+        @JsonSubTypes.Type(value = ExitItem.class, name = "exit"),
+        @JsonSubTypes.Type(value = Food.class, name = "food"),
+        @JsonSubTypes.Type(value = Roll.class, name = "roll"),
+        @JsonSubTypes.Type(value = Treasure.class, name = "treasure"),
+        @JsonSubTypes.Type(value = Weapon.class, name = "weapon")
+})
 public abstract class Item {
     private int itemValue;
     private int[] itemPos;
 
-    public Item(int value, int[] pos){
+    @JsonCreator
+    public Item(@JsonProperty("value") int value,
+                @JsonProperty("pos") int[] pos){
         this.itemValue = value;
         this.itemPos = pos;
     }

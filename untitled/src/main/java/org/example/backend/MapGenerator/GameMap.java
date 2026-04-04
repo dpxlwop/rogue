@@ -1,28 +1,58 @@
 package org.example.backend.MapGenerator;
-
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.example.Config;
 import org.example.backend.Entity.*;
-import org.example.backend.Item.ExitItem;
 import org.example.backend.Item.Item;
-import org.example.backend.Item.ItemsIcons;
 import org.example.backend.Item.Treasure;
 import org.example.backend.Tile;
 
-import java.lang.invoke.SwitchPoint;
+import java.util.ArrayList;
 import java.util.Random;
 
-public class GameMap extends MapGenerator{
+public class GameMap{
+    private final int width = Config.WIDTH;
+    private final int height = Config.MAP_HEIGHT;
+    @JsonIgnore
     private Random rand;
-    private Player player;
     private int level;
+    protected Tile[][] map;
+    protected ArrayList<Room> rooms;
+    private ArrayList<Entity> enemiesInRooms;
+    private ArrayList<Item> itemsOnLevel;
 
-    public GameMap(int width, int height, Player player, int level){
-        super(width, height, player, level);
-        summonExitItem();
-        rand = new Random();
+
+    public GameMap(int level, Player player){
+        this.level = level;
+        MapGenerator generator = new MapGenerator(this.level, player);
+        this.map = generator.getMap();
+        rooms = generator.getRooms();
+        this.enemiesInRooms = generator.getEnemiesInRooms();
+        this.itemsOnLevel = generator.getItemsOnLevel();
+        this.rand = new Random();
     }
 
-    public int[] getSize(){
-        return new int[]{width, height};
+    @JsonCreator
+    public GameMap(@JsonProperty("level") int levelS,
+            @JsonProperty("map") Tile[][] mapS,
+            @JsonProperty("rooms") ArrayList<Room> roomsS,
+            @JsonProperty("enemiesInRooms") ArrayList<Entity> enemies,
+            @JsonProperty("itemsOnLevel") ArrayList<Item> items){
+        this.level = levelS;
+        this.map = mapS;
+        this.rooms = roomsS;
+        this.enemiesInRooms = enemies;
+        this.itemsOnLevel = items;
+        this.rand = new Random();
+    }
+
+    public void addItemOnLevel(Item item){
+        this.itemsOnLevel.add(item);
+    }
+
+    public ArrayList<Entity> getEnemiesInRooms(){
+        return enemiesInRooms;
     }
 
     public Tile[][] getMap() {
@@ -37,15 +67,8 @@ public class GameMap extends MapGenerator{
         return topRightRoom;
     }
 
-    private void summonExitItem(){
-        Room bottomRightRoom = getBottomRightRoom();
-        int cordX = bottomRightRoom.getPosition()[0] + bottomRightRoom.getSize()[0] - 1;
-        int cordY = bottomRightRoom.getPosition()[1] + bottomRightRoom.getSize()[1] - 1;
-        bottomRightRoom.summonExitItem(new ExitItem(new int[]{cordX, cordY}));
-        Item exitItem = bottomRightRoom.getExitItem();
-        if(exitItem != null){
-            this.addItemOnLevel(exitItem);
-        }
+    public ArrayList<Item> getItemsOnLevel(){
+        return itemsOnLevel;
     }
 
     public Treasure summonTreasure(Entity deadEnemy, int cordX, int cordY){
@@ -79,20 +102,6 @@ public class GameMap extends MapGenerator{
             }
         }
         return topLeftRoom;
-    }
-
-    public Room getBottomRightRoom(){
-        int maxX = -1, maxY = -1;
-        Room bottomRightRoom = null;
-        for (Room r : rooms){
-            int[] cord = r.getPosition();
-            if(cord[0] >= maxX && cord[1] >= maxY){
-                maxX = cord[0];
-                maxY = cord[1];
-                bottomRightRoom = r;
-            }
-        }
-        return bottomRightRoom;
     }
 
     public int getEntityRoomID(Entity entity){

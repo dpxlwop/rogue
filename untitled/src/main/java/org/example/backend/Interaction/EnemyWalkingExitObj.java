@@ -1,11 +1,14 @@
 package org.example.backend.Interaction;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.example.backend.Entity.Entity;
+
 
 public class EnemyWalkingExitObj {
     private int[] cords;
     private MovementCodes exitCode;
     private Entity entity;
 
+    @JsonIgnore
     public EnemyWalkingExitObj(int[] cords, MovementCodes exitCode, Entity entity){
         this.cords = cords;
         this.exitCode = exitCode;

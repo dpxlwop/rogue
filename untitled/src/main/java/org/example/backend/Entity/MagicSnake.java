@@ -9,14 +9,15 @@ import org.example.backend.Interaction.MovementCodes;
 
 
 public class MagicSnake extends Entity implements Enemy{
-    private int evilness;
+
+    public MagicSnake(){}
+
     public MagicSnake(int[] cordXY){
         super(cordXY, 6, 14, 6);
-        this.evilness = 10;
     }
 
     public int getEvilness(){
-        return this.evilness;
+        return 10;
     }
 
     @Override

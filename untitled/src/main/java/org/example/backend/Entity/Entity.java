@@ -1,13 +1,33 @@
 package org.example.backend.Entity;
 
 import com.googlecode.lanterna.TextColor;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type"
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Ghost.class, name = "ghost"),
+        @JsonSubTypes.Type(value = MagicSnake.class, name = "magicsnake"),
+        @JsonSubTypes.Type(value = Ogre.class, name = "ogre"),
+        @JsonSubTypes.Type(value = Player.class, name = "player"),
+        @JsonSubTypes.Type(value = Vampire.class, name = "vampire"),
+        @JsonSubTypes.Type(value = Zombie.class, name = "zombie"),
+
+})
 public abstract class Entity {
     protected int[] cordXY;
     protected int[] oldCordXY;
     protected int health;
     private int agility;
     private int strength;
+
+    public Entity() {}
 
     public Entity(int[] cordXY, int health, int agility, int strength) {
         this.cordXY = cordXY;
@@ -16,6 +36,7 @@ public abstract class Entity {
         this.agility = agility;
         this.strength = strength;
     }
+
 
     public int[] getCordXY() {
         return cordXY;

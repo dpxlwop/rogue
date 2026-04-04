@@ -21,8 +21,7 @@ public class GameTick {
     }
 
     public GameTickExitCodes NextTick() throws Exception {
-        int[] playerCommand = this.keyHandler.handleInput(game.getPlayer());
-
+        int[] playerCommand = this.keyHandler.handleInput();
         if (playerCommand[0] == -999)
             return GameTickExitCodes.GAME_OVER_BY_PLAYER;
 

@@ -1,12 +1,18 @@
 package org.example.backend.Item;
-
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
 
 public class Backpack {
     private ArrayList<Item> backpack;
 
     public Backpack(){
-        backpack = new ArrayList<>();
+        this.backpack = new ArrayList<>();
+    }
+
+    @JsonCreator
+    public Backpack(@JsonProperty ArrayList<Item> backpack){
+        this.backpack = backpack;
     }
 
     public boolean addItemInBackpack(Item item){

@@ -1,28 +1,32 @@
 package org.example.backend.MapGenerator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.Setter;
+import org.example.Config;
 import org.example.backend.Entity.Entity;
 import org.example.backend.Entity.Player;
 import java.util.ArrayList;
 
+import org.example.backend.Item.ExitItem;
 import org.example.backend.Item.Item;
 import org.example.backend.Tile;
 
 import java.util.Random;
 
+@Getter @Setter
 public class MapGenerator {
-    protected int width;
-    protected int height;
-    protected Tile[][] map;               //карта в виде двумерного массива тайлов
-    protected ArrayList<Room> rooms;      //список комнат на карте
+    private final int width = Config.WIDTH;
+    private final int height = Config.MAP_HEIGHT;
+    private Tile[][] map;               //карта в виде двумерного массива тайлов
+    private ArrayList<Room> rooms;      //список комнат на карте
     private ArrayList<Entity> enemiesInRooms;
     private ArrayList<Item> itemsOnLevel;
     private static final int ROOM_COUNT = 9;
     private static final int ROOM_PADDING = 2;
-    private Player player;
     private int level;
+    private Player player;
 
-    public MapGenerator(int width, int height, Player player, int level) {
-        this.width = width;
-        this.height = height;
+    public MapGenerator(int level, Player player) {
         this.player = player;
         this.level = level;
         init();
@@ -48,14 +52,36 @@ public class MapGenerator {
 
         }
         this.map = CorridorGenerator.generateCorridors(this.map, this.rooms);
+        summonExitItem();
     }
 
-    public ArrayList<Entity> getEnemiesInRooms(){
-        return enemiesInRooms;
+    public void addItemOnLevel(Item item){
+        this.itemsOnLevel.add(item);
     }
 
-    public ArrayList<Item> getItemsOnLevel(){
-        return itemsOnLevel;
+    private void summonExitItem(){
+        Room bottomRightRoom = getBottomRightRoom();
+        int cordX = bottomRightRoom.getPosition()[0] + bottomRightRoom.getSize()[0] - 1;
+        int cordY = bottomRightRoom.getPosition()[1] + bottomRightRoom.getSize()[1] - 1;
+        bottomRightRoom.summonExitItem(new ExitItem(new int[]{cordX, cordY}));
+        Item exitItem = bottomRightRoom.getExitItem();
+        if(exitItem != null){
+            this.addItemOnLevel(exitItem);
+        }
+    }
+
+    private Room getBottomRightRoom(){
+        int maxX = -1, maxY = -1;
+        Room bottomRightRoom = null;
+        for (Room r : rooms){
+            int[] cord = r.getPosition();
+            if(cord[0] >= maxX && cord[1] >= maxY){
+                maxX = cord[0];
+                maxY = cord[1];
+                bottomRightRoom = r;
+            }
+        }
+        return bottomRightRoom;
     }
 
     private void init() {     //инициализация карты, делаем все стенами
@@ -88,7 +114,7 @@ public class MapGenerator {
             }
             int x = rand.nextInt(width - w - 1);
             int y = rand.nextInt(height - h - 1);
-            Room generatedRoom = new Room(x, y, w, h, this.player, this.level);
+            Room generatedRoom = new Room(x, y, w, h, this.level, this.player);
             if (roomHasConflict(generatedRoom)) {        //проверка на пересечение с другими комнатами
                 attempts++;
                 i--;
@@ -133,9 +159,5 @@ public class MapGenerator {
                 }
             }
         }
-    }
-
-    public void addItemOnLevel(Item item){
-        this.itemsOnLevel.add(item);
     }
 }

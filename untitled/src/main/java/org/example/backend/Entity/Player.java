@@ -1,8 +1,9 @@
 package org.example.backend.Entity;
 import com.googlecode.lanterna.TextColor;
-import org.example.backend.Entity.Entities;
 import org.example.backend.Item.*;
 import org.example.backend.MapGenerator.GameMap;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 
@@ -23,7 +24,33 @@ public class Player extends Entity{
         this.treasureCount = 0;
         this.isStunned = false;
         this.elixes = new ArrayList<>();
+    }
 
+    @JsonCreator
+    public Player(
+            @JsonProperty("cordXY") int[] cordXY,
+            @JsonProperty("oldCordXY") int[] oldCordXY,
+            @JsonProperty("health") int health,
+            @JsonProperty("agility") int agility,
+            @JsonProperty("strength") int strength,
+            @JsonProperty("maxHealth") int maxHealth,
+            @JsonProperty("roomID") int roomID,
+            @JsonProperty("weaponValue") int weaponValue,
+            @JsonProperty("equipedWeapon") Weapon equipedWeapon,
+            @JsonProperty("backpack") Backpack backpack,
+            @JsonProperty("treasureCount") int treasureCount,
+            @JsonProperty("isStunned") boolean isStunned,
+            @JsonProperty("elixes") ArrayList<Elix> elixes){
+        super(cordXY, health, agility, strength);
+        this.oldCordXY = oldCordXY;
+        this.maxHealth = maxHealth;
+        this.roomID = roomID;
+        this.weaponValue = weaponValue;
+        this.equipedWeapon = equipedWeapon;
+        this.backpack = (backpack != null) ? backpack : new Backpack();
+        this.treasureCount = treasureCount;
+        this.isStunned = isStunned;
+        this.elixes = (elixes != null) ? elixes : new ArrayList<>();
     }
 
     public boolean isStunned(){

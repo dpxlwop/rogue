@@ -1,5 +1,6 @@
 package org.example.ui;
 import com.googlecode.lanterna.TextColor;
+import org.example.Config;
 import org.example.backend.Entity.Entity;
 import org.example.Game.Game;
 import org.example.backend.Item.Item;
@@ -25,14 +26,12 @@ public class Drawer {
     private int width;
     private int mapHeight;
     private int screenHeight;
-    private static final Integer PLAYER_SIGHT_RADIUS=7;
-    private static final String VERSION="beta 4";
 
 
-    public Drawer(int width, int mapHeight, int screenHeight) throws Exception {
-        this.width = width;
-        this.mapHeight = mapHeight;
-        this.screenHeight = screenHeight;
+    public Drawer() throws Exception {
+        this.width = Config.WIDTH;
+        this.mapHeight = Config.MAP_HEIGHT;
+        this.screenHeight = Config.SCREEN_HEIGHT;
         size = new TerminalSize(width, screenHeight);
         factory = new DefaultTerminalFactory();
         factory.setInitialTerminalSize(size);
@@ -138,7 +137,7 @@ public class Drawer {
     private boolean isVisible(int playerX, int playerY, int entityX, int entityY){
         int dx = Math.abs(entityX - playerX);
         int dy = Math.abs(entityY - playerY);
-        return dx <= PLAYER_SIGHT_RADIUS && dy <= PLAYER_SIGHT_RADIUS;
+        return dx <= Config.PLAYER_SIGHT_RADIUS && dy <= Config.PLAYER_SIGHT_RADIUS;
     }
 
     private void drawEnemies(ArrayList<Entity> enemies, int[] playerCords){
@@ -173,16 +172,18 @@ public class Drawer {
 
     public void drawWelcomeScreen() throws Exception{
         screen.clear();
-        String[] welcome = new String[3];
+        String[] welcome = new String[4];
         welcome[0] = "RogueLike by Procluha";
-        welcome[1] = "Press any key to start...";
-        welcome[2] = VERSION;
+        welcome[1] = "If you want to load previous game press 'y'";
+        welcome[2] = "Press any other key to start new game";
+        welcome[3] = Config.VERSION;
         for (int i = 0; i < welcome.length; i++) {
             welcome[i] = stringCenterizer(welcome[i]);
         }
         tg.putString(0, screenHeight / 2, welcome[0]);
         tg.putString(0, screenHeight / 2 + 2, welcome[1]);
-        tg.putString(0, screenHeight - 1, welcome[2]);
+        tg.putString(0, screenHeight / 2 + 3, welcome[2]);
+        tg.putString(0, screenHeight - 1, welcome[3]);
         screen.refresh();
     }
 
@@ -197,8 +198,8 @@ public class Drawer {
         screen.clear();
         String[] welcome = new String[3];
         welcome[0] = "Thanks for playing Procluha's RogueLike";
-        welcome[1] = "Game will close automatically in 5 seconds";
-        welcome[2] = VERSION;
+        welcome[1] = "Game will close automatically in 3 seconds";
+        welcome[2] = Config.VERSION;
         for (int i = 0; i < welcome.length; i++) {
             welcome[i] = stringCenterizer(welcome[i]);
         }
@@ -213,8 +214,8 @@ public class Drawer {
         String[] welcome = new String[4];
         welcome[0] = "You died!";
         welcome[1] = "Thanks for playing Procluha's RogueLike";
-        welcome[2] = "Game will reload automatically in 5 seconds";
-        welcome[3] = VERSION;
+        welcome[2] = "Game will reload automatically in 3 seconds";
+        welcome[3] = Config.VERSION;
         for (int i = 0; i < welcome.length; i++) {
             welcome[i] = stringCenterizer(welcome[i]);
         }
@@ -230,8 +231,8 @@ public class Drawer {
         String[] welcome = new String[4];
         welcome[0] = "You win!";
         welcome[1] = "Thanks for playing Procluha's RogueLike";
-        welcome[2] = "Game will close automatically in 5 seconds";
-        welcome[3] = VERSION;
+        welcome[2] = "Game will close automatically in 3 seconds";
+        welcome[3] = Config.VERSION;
         for (int i = 0; i < welcome.length; i++) {
             welcome[i] = stringCenterizer(welcome[i]);
         }

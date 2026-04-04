@@ -6,19 +6,21 @@ import org.example.backend.Interaction.EnemyWalkingExitObj;
 import org.example.backend.Interaction.MovementChecker;
 import org.example.backend.MapGenerator.GameMap;
 import org.example.backend.Interaction.MovementCodes;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 public class Ogre extends Entity implements Enemy{
-    private int evilness;
     private boolean isStunned;
+
+    public Ogre() {}
 
     public Ogre(int[] cordXY){
         super(cordXY, 14, 2, 14);
-        this.evilness = 6;
     }
 
     public int getEvilness(){
-        return this.evilness;
+        return 6;
     }
 
     public void swapIsStunned(){

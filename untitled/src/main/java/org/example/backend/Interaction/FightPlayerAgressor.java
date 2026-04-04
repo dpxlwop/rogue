@@ -10,6 +10,7 @@ import java.util.Random;
 
 public class FightPlayerAgressor {
     static Random rand = new Random();
+
     public static Entity playerAttacs(Player player, ArrayList<Entity> enemies, int[] kickPos, Game game){
         Entity enemy = null;
         for (Entity e : enemies){

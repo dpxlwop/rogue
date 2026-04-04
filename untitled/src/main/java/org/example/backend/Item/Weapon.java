@@ -1,10 +1,13 @@
 package org.example.backend.Item;
-
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.example.backend.Entity.Player;
 
 public class Weapon extends Item implements Equipable {
 
-    public Weapon(int strength, int[] itemPos){
+    @JsonCreator
+    public Weapon(@JsonProperty("strength") int strength,
+                  @JsonProperty("itemPos") int[] itemPos){
         super(strength, itemPos);
     }
 

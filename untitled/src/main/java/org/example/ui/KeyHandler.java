@@ -13,19 +13,19 @@ public class KeyHandler {
         this.screen = screen;
     }
 
-    public int[] handleInput(Player player) throws Exception {
+    public int[] handleInput() throws Exception {
         KeyStroke key = screen.pollInput();
         int[] move = new int[]{0,0};
         while (key == null){
             key = screen.pollInput();
             if (key != null) {
-                move = processInput(player, key);
+                move = processInput(key);
             }
         }
         return move;
     }
 
-    public int[] processInput(Player player, KeyStroke key) throws Exception {
+    private int[] processInput(KeyStroke key) throws Exception {
         int[] move = new int[]{0,0};
         if (key != null && key.getKeyType() == KeyType.Character) {
             switch (key.getCharacter()) {
@@ -71,6 +71,12 @@ public class KeyHandler {
                 } case '9' -> {
                     move[0] = 100;
                     move[1] = 9;
+                } case 'y' -> {
+                    move[0] = 200;
+                    move[1] = 1;
+                } default -> {
+                    move[0] = 200;
+                    move[1] = 0;
                 }
             }
         }

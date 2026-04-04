@@ -1,9 +1,9 @@
 package org.example.backend.Item;
 
 import org.example.backend.Entity.Player;
-import org.example.backend.Item.ItemsIcons;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-//TODO добавить временность
 
 public class Elix extends Item implements Usable{
     private BuffAttributes attributeToBuff;
@@ -15,6 +15,18 @@ public class Elix extends Item implements Usable{
         this.attributeToBuff = attributeToBuff;
         this.durationTicks = duration;
         this.ticksActive = 0;
+    }
+
+    @JsonCreator
+    public Elix(@JsonProperty("attributeToBuff") BuffAttributes attributeToBuff,
+                @JsonProperty("itemValue") int buffValue,
+                @JsonProperty("itemPos") int[] itemPos,
+                @JsonProperty("durationTicks") int duration,
+                @JsonProperty("ticksActive") int ticksActive){
+        super(buffValue, itemPos);
+        this.attributeToBuff = attributeToBuff;
+        this.durationTicks = duration;
+        this.ticksActive = ticksActive;
     }
 
     public void removeEffect(Player player){
