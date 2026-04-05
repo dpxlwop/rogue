@@ -1,26 +1,27 @@
 package org.example.Data;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.example.Game.Game;
 import org.example.backend.Entity.Player;
-
 import java.util.UUID;
 
 public class Score {
     private int score;
     private UUID id;
+    private String playerName;
 
     @JsonCreator
     public Score(
             @JsonProperty("score") int score,
-            @JsonProperty("id") UUID id
+            @JsonProperty("id") UUID id,
+            @JsonProperty("playerName") String playerName
     ) {
         this.score = score;
         this.id = id;
+        this.playerName = playerName;
     }
 
-    public Score(Player player, Game game, UUID id) {
+    public Score(Player player, Game game, UUID id, String name) {
         int health = player.getHealth();
         int maxHealth = player.getMaxHealth();
         int strength = player.getStrength();
@@ -40,7 +41,9 @@ public class Score {
                 * stunPenalty;
         this.score = (int) scoreDouble;
         this.id = id;
+        this.playerName = name;
     }
+
 
     public UUID getID(){
         return this.id;
@@ -48,6 +51,10 @@ public class Score {
 
     public int getScore() {
         return score;
+    }
+
+    public String getPlayerName() {
+        return playerName;
     }
 
     public void reCalculateScore(Player player,  Game game) {

@@ -1,8 +1,6 @@
 package org.example.Data;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -38,13 +36,4 @@ public class LeaderBoard {
             scoreList.remove(scoreList.size() - 1);
         }
     }
-
-    public void removeFromScoreList(Score score){
-        this.scoreList.remove(score);
-    }
-
-    public int count(){
-        return this.scoreList.size();
-    }
-
 }

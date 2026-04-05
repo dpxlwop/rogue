@@ -1,14 +1,9 @@
 package org.example.backend;
-
 import org.example.Game.Game;
 import org.example.backend.Entity.Enemy;
 import org.example.backend.Entity.Entity;
-import org.example.backend.Entity.Player;
 import org.example.backend.Interaction.*;
 import org.example.backend.Item.Item;
-import org.example.backend.Item.Elix;
-import org.example.backend.Item.BuffAttributes;
-import org.example.backend.MapGenerator.Room;
 import org.example.ui.KeyHandler;
 
 public class GameTick {

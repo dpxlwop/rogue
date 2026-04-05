@@ -1,5 +1,4 @@
 package org.example.backend.Item;
-
 import org.example.backend.Entity.Player;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -38,7 +37,6 @@ public class Elix extends Item implements Usable{
     }
 
     public void use(Player player){
-        System.out.println(String.format("%s %d, %d", attributeToBuff, getItemValue(), this.durationTicks));
         switch (attributeToBuff){
             case AGILITY -> player.addAgility(this.getItemValue());
             case STRENGTH -> player.addStrength(this.getItemValue());

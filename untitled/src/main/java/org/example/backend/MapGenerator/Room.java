@@ -80,20 +80,20 @@ public class Room {
 
         generateRandomEntity(chance);
 
-        if (rand.nextDouble() < 0.8 / level + 0.2) {
+        if (rand.nextDouble() < 0.8 / level + 0.5) {
             int itemsCount;
-            if (rand.nextDouble() > 0.8 / level + 0.2)
+            if (rand.nextDouble() > 0.8 / level + 0.5)
                 itemsCount = 1;
             else
-                itemsCount = rand.nextInt(4);
+                itemsCount = rand.nextInt(5);
             for (int i = 0; i < itemsCount; i++) {
                 int type = rand.nextInt(4);
                 int[] itempos = new int[]{this.getCenter()[0] + rand.nextInt(3), this.getCenter()[1] + rand.nextInt(3)};
                 switch (type) {
-                    case 0 -> this.itemsInRoom.add(new Elix(selectRandomAttribute(), rand.nextInt(3)+1, itempos, rand.nextInt(256)+16));
-                    case 1 -> this.itemsInRoom.add(new Food(rand.nextInt(4) +1 , itempos));
-                    case 2 -> this.itemsInRoom.add(new Roll(selectRandomAttribute(), rand.nextInt(3) + 1, itempos));
-                    case 3 -> this.itemsInRoom.add(new Weapon(rand.nextInt(4) + 1, itempos));
+                    case 0 -> this.itemsInRoom.add(new Elix(selectRandomAttribute(), rand.nextInt(5)+1, itempos, rand.nextInt(256)+16));
+                    case 1 -> this.itemsInRoom.add(new Food(rand.nextInt(10) + 5 , itempos));
+                    case 2 -> this.itemsInRoom.add(new Roll(selectRandomAttribute(), rand.nextInt(5) + 1, itempos));
+                    case 3 -> this.itemsInRoom.add(new Weapon(rand.nextInt(5) + 1, itempos));
                 }
             }
         }

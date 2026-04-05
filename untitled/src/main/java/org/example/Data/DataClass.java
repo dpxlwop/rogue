@@ -1,5 +1,4 @@
 package org.example.Data;
-
 import org.example.Game.Game;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
@@ -44,9 +43,11 @@ public class DataClass {
         return file.exists() && file.length()>0;
     }
 
-    public static void clearSave() {
+    public static void clearSave() throws IOException {
         File file = new File(SAVEPATH);
-        if (file.exists()) file.delete();
+        if (file.exists()) {
+            file.delete();
+        }
     }
 
     public static void saveLeaderBoard(LeaderBoard lb) throws IOException {

@@ -1,7 +1,6 @@
 package org.example.backend.Entity;
 
 import com.googlecode.lanterna.TextColor;
-
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 

@@ -1,20 +1,18 @@
 package org.example.ui;
-import com.googlecode.lanterna.TextColor;
-import org.example.Config;
-import org.example.Data.Score;
-import org.example.backend.Entity.Entity;
-import org.example.Game.Game;
-import org.example.backend.Item.Item;
-import org.example.backend.Tile;
-import org.example.backend.MessageLog;
-
 import com.googlecode.lanterna.TerminalSize;
+import com.googlecode.lanterna.TextColor;
+import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
-import com.googlecode.lanterna.graphics.TextGraphics;
+import org.example.Config;
+import org.example.Data.Score;
+import org.example.Game.Game;
+import org.example.backend.Entity.Entity;
 import org.example.backend.Entity.Player;
-import java.lang.String;
+import org.example.backend.Item.Item;
+import org.example.backend.MessageLog;
+import org.example.backend.Tile;
 import java.util.ArrayList;
 
 public class Drawer {
@@ -43,17 +41,10 @@ public class Drawer {
         screen.setCursorPosition(null);
     }
 
-    private void clear() throws Exception {
-        screen.clear();
-    }
-
-        public void stop() throws Exception {
+    public void stop() throws Exception {
         screen.stopScreen();
     }
 
-    private void refresh() throws Exception {
-        screen.refresh();
-    }
 
     public TerminalScreen getScreen() {
         return screen;
@@ -171,29 +162,30 @@ public class Drawer {
     }
 
 
-    public void drawWelcomeScreen(ArrayList<Score> scores) throws Exception {
+    public void drawWelcomeScreen(ArrayList<Score> scores, String name) throws Exception {
         screen.clear();
         tg.putString(0, 0, stringCenterizer("Leaders"));
         int max = Math.min(5, scores.size());
         for (int i = 0; i < max; i++) {
             Score s = scores.get(i);
-            String line = (i + 1) + ". " + s.getScore();
+            String line = (i + 1) + ". " + s.getPlayerName() + " - " + s.getScore();
             tg.putString(0, i + 1, stringCenterizer(line));
         }
         for (int i = max; i < 5; i++) {
             tg.putString(0, i + 1, stringCenterizer((i + 1) + ". -"));
         }
-        // --- WELCOME ---
+        //WELCOME
         String[] welcome = new String[4];
         welcome[0] = "RogueLike by Procluha";
-        welcome[1] = "If you want to load previous game press 'y'";
-        welcome[2] = "Press any other key to start new game";
+        welcome[1] = "If you want to load previous game press 'Enter'";
+        welcome[2] = "Enter your name to start new game: " + (name == null ? "" : name);
         welcome[3] = Config.VERSION;
 
         for (int i = 0; i < welcome.length; i++) {
             welcome[i] = stringCenterizer(welcome[i]);
         }
 
+        System.out.println(welcome[2].length());
         tg.putString(0, screenHeight / 2, welcome[0]);
         tg.putString(0, screenHeight / 2 + 2, welcome[1]);
         tg.putString(0, screenHeight / 2 + 3, welcome[2]);
@@ -201,7 +193,6 @@ public class Drawer {
 
         screen.refresh();
     }
-
 
     private String stringCenterizer(String str) {
         int spaces = (this.width - str.length()) / 2;

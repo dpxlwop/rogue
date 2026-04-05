@@ -1,12 +1,10 @@
 package org.example.backend.Interaction;
-
 import org.example.backend.Entity.Entity;
 import org.example.backend.Entity.Player;
 import org.example.backend.Item.ExitItem;
 import org.example.backend.Item.Item;
 import org.example.backend.MapGenerator.GameMap;
 import org.example.backend.Tile;
-
 import java.util.ArrayList;
 
 public class MovementChecker {

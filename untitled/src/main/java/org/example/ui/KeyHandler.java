@@ -1,9 +1,9 @@
 package org.example.ui;
 import com.googlecode.lanterna.input.KeyType;
-import org.example.backend.Entity.Player;
+import org.example.Data.Score;
 import com.googlecode.lanterna.input.KeyStroke;
-
 import com.googlecode.lanterna.screen.TerminalScreen;
+import java.util.ArrayList;
 
 
 public class KeyHandler {
@@ -83,4 +83,22 @@ public class KeyHandler {
         return move;
     }
 
+    public String handleName(ArrayList<Score> scores, Drawer drawer) throws Exception {
+        StringBuilder input = new StringBuilder();
+        while (true) {
+            KeyStroke key = screen.readInput();
+            if (key.getKeyType() == KeyType.Enter) {
+                break;
+            }
+            if (key.getKeyType() == KeyType.Backspace && input.length() > 0) {
+                input.deleteCharAt(input.length() - 1);
+            }
+            if (key.getKeyType() == KeyType.Character) {
+                input.append(key.getCharacter());
+            }
+            drawer.drawWelcomeScreen(scores, input.toString());
+        }
+        String result = input.toString();
+        return result;
+    }
 }

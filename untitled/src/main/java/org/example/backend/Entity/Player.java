@@ -191,5 +191,12 @@ public class Player extends Entity{
         }
     }
 
+    @Override
+    public void addHealth(int health){
+        this.health+=health;
+        if (this.health > this.maxHealth){
+            this.health = this.maxHealth;
+        }
+    }
 
 }

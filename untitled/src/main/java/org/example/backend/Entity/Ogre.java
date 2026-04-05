@@ -1,6 +1,5 @@
 package org.example.backend.Entity;
 import java.util.Random;
-
 import com.googlecode.lanterna.TextColor;
 import org.example.backend.Interaction.EnemyWalkingExitObj;
 import org.example.backend.Interaction.MovementChecker;

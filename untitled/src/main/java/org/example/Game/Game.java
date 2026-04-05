@@ -1,6 +1,4 @@
 package org.example.Game;
-
-import org.example.Config;
 import org.example.backend.Entity.Entity;
 import org.example.backend.Entity.Player;
 import org.example.backend.Item.Item;
@@ -13,7 +11,6 @@ import org.example.ui.UiMaster;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -28,13 +25,15 @@ public class Game {
     private MessageLog messageLog;
     @JsonIgnore
     private UiMaster uiMaster;
+    private String name;
 
 
-    public Game() throws Exception {
-        id = UUID.randomUUID();
+    public Game(String name) throws Exception {
+        this.name = name;
+        this.id = UUID.randomUUID();
         this.messageLog = new MessageLog();
         this.level = 1;
-        this.player = new Player(new int[]{1, 1}, 50, 50, 50);
+        this.player = new Player(new int[]{1, 1}, 100, 25, 25);
         this.map = new GameMap(1, this.player);
         Room playerRoom = this.map.spawnPlayer(player);
         this.enemiesOnLevel = map.getEnemiesInRooms();
@@ -44,12 +43,14 @@ public class Game {
 
     @JsonCreator
     public Game(@JsonProperty("id") UUID id,
+                @JsonProperty("name") String name,
                 @JsonProperty("level") int jsonLevel,
                 @JsonProperty("map") GameMap jsonMap,
                 @JsonProperty("player") Player player,
                 @JsonProperty("enemiesOnLevel") ArrayList<Entity> jsonEnemies,
                 @JsonProperty("itemsOnLevel") ArrayList<Item> jsonItems
                 ) throws Exception {
+        this.name = name;
         this.id = id;
         this.messageLog = new MessageLog();
         this.level = jsonLevel;
@@ -59,6 +60,10 @@ public class Game {
         this.itemsOnLevel = (jsonItems != null) ? jsonItems : new ArrayList<>();
         this.enemiesOnLevel = map.getEnemiesInRooms();
         this.itemsOnLevel = map.getItemsOnLevel();
+    }
+
+    public String getName(){
+        return this.name;
     }
 
     public UUID getID() {

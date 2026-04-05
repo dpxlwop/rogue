@@ -1,6 +1,5 @@
 package org.example.backend.Entity;
 import java.util.Random;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.googlecode.lanterna.TextColor;
@@ -10,16 +9,14 @@ import org.example.backend.MapGenerator.GameMap;
 import org.example.backend.Interaction.MovementCodes;
 
 public class Zombie extends Entity implements Enemy{
-    private int evilness;
 
     @JsonCreator
     public Zombie(@JsonProperty("cordXY") int[] cordXY){
         super(cordXY, 10, 2, 6);
-        this.evilness = 6;
     }
 
     public int getEvilness(){
-        return this.evilness;
+        return 6;
     }
 
     @Override

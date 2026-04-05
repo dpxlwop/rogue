@@ -1,8 +1,6 @@
 package org.example.backend.Interaction;
-
 import org.example.Game.Game;
 import org.example.backend.Entity.*;
-
 import java.util.Random;
 
 public class FightEntityAgressor {
@@ -31,10 +29,12 @@ public class FightEntityAgressor {
 
 
     private static int getDamage(Player player, Entity attacker){
-        int attackerStrength = attacker.getStrength();
-        int playerAgility = player.getAgility();
-        int damage = 1 + (attackerStrength - playerAgility - 2);
-        return damage <= 0 ? 1 : damage;
+        int str = attacker.getStrength();
+        int agi = player.getAgility();
+        double damage = (str * str) / (double)(str + agi);
+        damage *= 1.1;
+        damage += Math.random() * 2;
+        return Math.max(1, (int)damage);
     }
 
     private static boolean isSuccessKick(Entity attacker){

@@ -7,7 +7,6 @@ import org.example.backend.Entity.*;
 import org.example.backend.Item.Item;
 import org.example.backend.Item.Treasure;
 import org.example.backend.Tile;
-
 import java.util.ArrayList;
 import java.util.Random;
 

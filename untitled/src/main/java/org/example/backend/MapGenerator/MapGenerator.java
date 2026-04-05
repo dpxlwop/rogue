@@ -1,12 +1,10 @@
 package org.example.backend.MapGenerator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.example.Config;
 import org.example.backend.Entity.Entity;
 import org.example.backend.Entity.Player;
 import java.util.ArrayList;
-
 import org.example.backend.Item.ExitItem;
 import org.example.backend.Item.Item;
 import org.example.backend.Tile;

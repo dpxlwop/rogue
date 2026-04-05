@@ -1,10 +1,8 @@
 package org.example.backend.Item;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import org.example.backend.Entity.*;
 
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
