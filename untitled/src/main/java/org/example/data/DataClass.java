@@ -1,5 +1,5 @@
-package org.example.Data;
-import org.example.Game.Game;
+package org.example.data;
+import org.example.game.Game;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;

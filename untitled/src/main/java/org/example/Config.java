@@ -6,5 +6,5 @@ public class Config {
     public static final int SCREEN_HEIGHT = 41;
     //ui constants
     public static final String VERSION="1.1";
-    public static final Integer PLAYER_SIGHT_RADIUS=100;
+    public static final Integer PLAYER_SIGHT_RADIUS=7;
 }

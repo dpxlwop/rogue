@@ -1,5 +1,5 @@
 package org.example.backend;
-import org.example.Game.Game;
+import org.example.game.Game;
 import org.example.backend.Entity.Enemy;
 import org.example.backend.Entity.Entity;
 import org.example.backend.Interaction.*;
@@ -103,7 +103,6 @@ public class GameTick {
             Entity enemy = FightPlayerAgressor.playerAttacs(game.getPlayer(), game.getEnemiesOnLevel(), playerMovement, game);
             if (enemy != null) {
                 if (enemy.isDead()) {
-                    int roomId = game.getMap().getEntityRoomID(enemy);
                     int[] cords = enemy.getCordXY();
                     game.addItemToMap(game.getMap().summonTreasure(enemy, cords[0], cords[1]));
                     game.removeEntityFromGame(enemy);

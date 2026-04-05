@@ -2,7 +2,7 @@ package org.example.backend.Interaction;
 import org.example.backend.Entity.Entity;
 import org.example.backend.Entity.Player;
 import org.example.backend.Entity.Vampire;
-import org.example.Game.Game;
+import org.example.game.Game;
 import java.util.ArrayList;
 import java.util.Random;
 

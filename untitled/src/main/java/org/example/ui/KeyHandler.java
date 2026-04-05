@@ -1,6 +1,6 @@
 package org.example.ui;
 import com.googlecode.lanterna.input.KeyType;
-import org.example.Data.Score;
+import org.example.data.Score;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.screen.TerminalScreen;
 import java.util.ArrayList;

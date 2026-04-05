@@ -1,7 +1,7 @@
-package org.example.Data;
+package org.example.data;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.example.Game.Game;
+import org.example.game.Game;
 import org.example.backend.Entity.Player;
 import java.util.UUID;
 

@@ -1,4 +1,4 @@
-package org.example.Game;
+package org.example.game;
 import org.example.backend.Entity.Entity;
 import org.example.backend.Entity.Player;
 import org.example.backend.Item.Item;
@@ -32,7 +32,7 @@ public class Game {
         this.name = name;
         this.id = UUID.randomUUID();
         this.messageLog = new MessageLog();
-        this.level = 1;
+        this.level = 20;
         this.player = new Player(new int[]{1, 1}, 100, 25, 25);
         this.map = new GameMap(1, this.player);
         Room playerRoom = this.map.spawnPlayer(player);

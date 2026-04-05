@@ -1,13 +1,13 @@
 package org.example;
 
-import org.example.Data.DataClass;
-import org.example.Data.LeaderBoard;
-import org.example.Data.Score;
-import org.example.Game.Game;
+import org.example.data.DataClass;
+import org.example.data.LeaderBoard;
+import org.example.data.Score;
+import org.example.game.Game;
 import org.example.backend.GameTickExitCodes;
 import org.example.backend.GameTick;
 import org.example.ui.UiMaster;
-import javax.swing.*;
+
 import java.io.IOException;
 
 

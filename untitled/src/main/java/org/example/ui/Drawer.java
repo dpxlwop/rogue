@@ -6,8 +6,8 @@ import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
 import org.example.Config;
-import org.example.Data.Score;
-import org.example.Game.Game;
+import org.example.data.Score;
+import org.example.game.Game;
 import org.example.backend.Entity.Entity;
 import org.example.backend.Entity.Player;
 import org.example.backend.Item.Item;
@@ -44,7 +44,6 @@ public class Drawer {
     public void stop() throws Exception {
         screen.stopScreen();
     }
-
 
     public TerminalScreen getScreen() {
         return screen;
@@ -176,7 +175,7 @@ public class Drawer {
         }
         //WELCOME
         String[] welcome = new String[4];
-        welcome[0] = "RogueLike by Procluha";
+        welcome[0] = "RogueLike";
         welcome[1] = "If you want to load previous game press 'Enter'";
         welcome[2] = "Enter your name to start new game: " + (name == null ? "" : name);
         welcome[3] = Config.VERSION;
@@ -203,7 +202,7 @@ public class Drawer {
     public void drawQuitScreen() throws Exception{
         screen.clear();
         String[] welcome = new String[3];
-        welcome[0] = "Thanks for playing Procluha's RogueLike";
+        welcome[0] = "Thanks for playing!";
         welcome[1] = "Game will close automatically in 3 seconds";
         welcome[2] = Config.VERSION;
         for (int i = 0; i < welcome.length; i++) {
@@ -219,7 +218,7 @@ public class Drawer {
         screen.clear();
         String[] welcome = new String[4];
         welcome[0] = "You died!";
-        welcome[1] = "Thanks for playing Procluha's RogueLike";
+        welcome[1] = "Thanks for playing!";
         welcome[2] = "Game will reload automatically in 3 seconds";
         welcome[3] = Config.VERSION;
         for (int i = 0; i < welcome.length; i++) {
@@ -236,7 +235,7 @@ public class Drawer {
         screen.clear();
         String[] welcome = new String[4];
         welcome[0] = "You win!";
-        welcome[1] = "Thanks for playing Procluha's RogueLike";
+        welcome[1] = "Thanks for playing";
         welcome[2] = "Game will close automatically in 3 seconds";
         welcome[3] = Config.VERSION;
         for (int i = 0; i < welcome.length; i++) {

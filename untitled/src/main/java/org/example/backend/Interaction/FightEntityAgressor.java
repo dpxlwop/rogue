@@ -1,5 +1,5 @@
 package org.example.backend.Interaction;
-import org.example.Game.Game;
+import org.example.game.Game;
 import org.example.backend.Entity.*;
 import java.util.Random;
 

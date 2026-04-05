@@ -1,7 +1,7 @@
 package org.example.backend;
 
 public enum Tile {
-    WALL('#'),
+    WALL((char)219),
     FLOOR('.');
     private char symbol;
 
